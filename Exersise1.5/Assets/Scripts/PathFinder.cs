@@ -30,7 +30,7 @@ public class PathFinder
         {
           if (!DoesListContaiNode(connectedNode, openList))
           {
-            float costToConnected = smallestCostSoFar.costSoFar + smallestCostSoFar.graphNode.connections[connectedNode];
+            float costToConnected = smallestCostSoFar.costSoFar + smallestCostSoFar.graphNode.connections[connectedNode] + Vector3.Distance(connectedNode.transform.position, endNode.transform.position);
             PathfindingNode predecessor = smallestCostSoFar;
 
             pathfindingNodes.Add(connectedNode, new PathfindingNode(connectedNode, costToConnected, predecessor));
