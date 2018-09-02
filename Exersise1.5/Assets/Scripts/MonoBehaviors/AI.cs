@@ -16,12 +16,7 @@ public class AI : MonoBehaviour
 
   public bool oneAtATime = false;
 
-  private void Start()
-  {
-    TileInfo.ai = this;
-    TileGenerator.aiPlayer = this;
-
-  }
+  public bool debug = false;
 
   private void Update()
   {
@@ -54,7 +49,7 @@ public class AI : MonoBehaviour
         {
           if (moveQue.Count == 0 || !oneAtATime)
           {
-            hit.transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI();
+            hit.transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI(debug);
 
           }
         }
@@ -79,13 +74,14 @@ public class AI : MonoBehaviour
     }
     #endregion
 
+    #region Debugging tests
     if (Input.GetKeyDown(KeyCode.Space) && !Input.GetKey(KeyCode.LeftShift))
     {
       for (int i = 0; i < randomPointsDebug; i++)
       {
         int randomNumber = Random.Range(0, allNodes.Count);
 
-        allNodes[randomNumber].transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI();
+        allNodes[randomNumber].transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI(debug);
 
       }
     }
@@ -94,10 +90,11 @@ public class AI : MonoBehaviour
     {
       foreach(Node debugNode in allNodes)
       {
-        debugNode.transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI();
+        debugNode.transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI(debug);
 
       }
     }
+    #endregion
 
   }
 }

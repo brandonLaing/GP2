@@ -6,8 +6,13 @@ public class TileInfo : MonoBehaviour
 {
   public Node tileNode;
 
-  public static AI ai;
+  public AI ai;
 
+  private void Start()
+  {
+    ai = GameObject.FindGameObjectWithTag("Player").GetComponent<AI>();
+
+  }
   public void GatherConnections()
   {
     foreach (GameObject tile in GameObject.FindGameObjectsWithTag("Tile"))
@@ -32,25 +37,34 @@ public class TileInfo : MonoBehaviour
 
   }
 
-  public void SendCordinatesToAI()
+  public void SendCordinatesToAI(bool debug)
   {
-    tileNode.DisplayConnections();
-
-    // TODO:
-    // Connect Dijkstra
-    //Debug.LogWarningFormat("TODO at TileInfo on line 46");
-    //ai.moveQue = PathFinder.Dijkstra(ai.startNode, this.tileNode);
-    //ai.startNode = this.tileNode;
-
-    List<Vector3> vectorList = PathFinder.Dijkstra(ai.startNode, this.tileNode);
-
-    foreach (Vector3 vector3 in vectorList)
+    if (debug)
     {
-      ai.moveQue.Add(vector3);
+      tileNode.DisplayConnections();
 
     }
 
-    ai.startNode = this.tileNode;
+    List<Vector3> vectorList;
 
+    try
+    {
+      vectorList = PathFinder.Dijkstra(ai.startNode, this.tileNode);
+
+      foreach (Vector3 vector3 in vectorList)
+      {
+        ai.moveQue.Add(vector3);
+
+      }
+
+      ai.startNode = this.tileNode;
+
+    }
+    catch
+    {
+      Debug.LogWarning("Couldn't find a path to: " + this.tileNode.transform.name);
+
+      vectorList = new List<Vector3>();
+    }
   }
 }

@@ -12,7 +12,9 @@ public class Node
   public Node(Transform incomingTransform)
   {
     transform = incomingTransform;
+
   }
+
   public void DisplayConnections()
   {
     StringBuilder sb = new StringBuilder();
