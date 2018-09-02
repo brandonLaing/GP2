@@ -42,7 +42,13 @@ public class TileInfo : MonoBehaviour
     //ai.moveQue = PathFinder.Dijkstra(ai.startNode, this.tileNode);
     //ai.startNode = this.tileNode;
 
-    ai.moveQue = PathFinder.Dijkstra(ai.startNode, this.tileNode);
+    List<Vector3> vectorList = PathFinder.Dijkstra(ai.startNode, this.tileNode);
+
+    foreach (Vector3 vector3 in vectorList)
+    {
+      ai.moveQue.Add(vector3);
+
+    }
 
     ai.startNode = this.tileNode;
 

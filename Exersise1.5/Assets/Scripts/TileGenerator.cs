@@ -23,17 +23,38 @@ public class TileGenerator : MonoBehaviour
     {
       for (int z = 0; z < gridHeight; z++)
       {
+        #region Make Tiles
         GameObject newTile = GameObject.Instantiate(tileTemplate, new Vector3(x, 0, z), tileTemplate.transform.rotation, this.gameObject.transform);
 
         newTile.transform.name += " " + i;
 
         newTile.GetComponent<TileInfo>().tileNode = new Node(newTile.transform);
 
-        allNodes.Add(newTile.GetComponent<TileInfo>().tileNode);
+        allNodes.Insert(0, newTile.GetComponent<TileInfo>().tileNode);
 
         i++;
+        #endregion
+        /**
+         * So if its not on any edge then add a connection each way
+         */
+        #region Check Connections
+        int temp = 0;
 
+        foreach (Node nodeChecked in allNodes)
+        {
+          if ((nodeChecked.transform.position == newTile.transform.position + new Vector3(0, 0, -1) ||
+               nodeChecked.transform.position == newTile.transform.position + new Vector3(-1, 0, 0)) && temp < 2)
+          {
+            temp++;
 
+            newTile.GetComponent<TileInfo>().tileNode.connections.Add(nodeChecked, 1);
+            nodeChecked.connections.Add(newTile.GetComponent<TileInfo>().tileNode, 1);
+
+          }
+        }
+        #endregion
+
+        #region Set Color
         if (x % 2 == 0)
         {
           if (z % 2 == 0)
@@ -61,22 +82,7 @@ public class TileGenerator : MonoBehaviour
 
           }
         }
-      }
-    }
-
-    foreach(Node baseNode in allNodes)
-    {
-      foreach (Node compairingNode in allNodes)
-      {
-
-        if (compairingNode.transform.position == baseNode.transform.position + new Vector3(0, 0, 1) ||
-            compairingNode.transform.position == baseNode.transform.position + new Vector3(0, 0, -1) ||
-            compairingNode.transform.position == baseNode.transform.position + new Vector3(1, 0, 0) ||
-            compairingNode.transform.position == baseNode.transform.position + new Vector3(-1, 0, 0))
-        {
-          baseNode.connections.Add(compairingNode, 1);
-
-        }
+        #endregion
       }
     }
 
@@ -89,6 +95,8 @@ public class TileGenerator : MonoBehaviour
     aiPlayer.allNodes = allNodes;
 
     Destroy(this);
+
+    Camera.main.transform.position = new Vector3(gridWidth / 2, Camera.main.transform.position.y, gridHeight / 2);
 
   }
 }

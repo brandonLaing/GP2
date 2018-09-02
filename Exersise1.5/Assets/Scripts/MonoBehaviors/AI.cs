@@ -6,11 +6,15 @@ public class AI : MonoBehaviour
 {
   public Node startNode;
 
-  public static int moveSpeed = 10;
+  public int moveSpeed = 10;
 
   public List<Vector3> moveQue = new List<Vector3>();
 
   public List<Node> allNodes = new List<Node>();
+
+  public int randomPointsDebug = 1;
+
+  public bool oneAtATime = false;
 
   private void Start()
   {
@@ -48,7 +52,7 @@ public class AI : MonoBehaviour
       {
         if (hit.transform.tag == "Tile")
         {
-          if (moveQue.Count == 0)
+          if (moveQue.Count == 0 || !oneAtATime)
           {
             hit.transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI();
 
@@ -75,11 +79,25 @@ public class AI : MonoBehaviour
     }
     #endregion
 
-    if (Input.GetKeyDown(KeyCode.Space))
+    if (Input.GetKeyDown(KeyCode.Space) && !Input.GetKey(KeyCode.LeftShift))
     {
-      int randomNumber = Random.Range(0, allNodes.Count);
+      for (int i = 0; i < randomPointsDebug; i++)
+      {
+        int randomNumber = Random.Range(0, allNodes.Count);
 
-      allNodes[randomNumber].transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI();
+        allNodes[randomNumber].transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI();
+
+      }
     }
+
+    if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.LeftShift))
+    {
+      foreach(Node debugNode in allNodes)
+      {
+        debugNode.transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI();
+
+      }
+    }
+
   }
 }

@@ -227,7 +227,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -355,6 +355,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveQue: []
+  oneAtATime: 0
+--- !u!1 &993771233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 993771235}
+  - component: {fileID: 993771234}
+  m_Layer: 0
+  m_Name: MapReseter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &993771234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 993771233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee21e59dc8ec30c408b5172ebb8952d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &993771235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 993771233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.9196167, y: 9.483758, z: 2.7253077}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1439570662
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,8 +423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc0b1be6e3eb944d858ce068e36b3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 10
-  gridHeight: 10
+  gridWidth: 30
+  gridHeight: 20
   tileTemplate: {fileID: 1945569430134348, guid: 3552609e2b5609d4eaa0bd7b86d0c363,
     type: 2}
   black: {fileID: 2100000, guid: f464e04ef546a2d4687fb6a7bbf82888, type: 2}
