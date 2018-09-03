@@ -7,16 +7,16 @@ public class MapReset : MonoBehaviour
 {
   public static TileGenerator tileGen;
 
-  private float checkCounter = 0;
-
 	void Update ()
   {
+    // re loads the scene
     if (Input.GetKeyDown(KeyCode.Backslash) && !Input.GetKey(KeyCode.LeftShift))
     {
       SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
     }
 
+    // rechecks connections for all tiles
     if (Input.GetKeyDown(KeyCode.Backslash) && Input.GetKey(KeyCode.LeftShift))
     {
       tileGen.ReCheckConnections();
