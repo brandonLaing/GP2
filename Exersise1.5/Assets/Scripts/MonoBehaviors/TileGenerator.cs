@@ -8,11 +8,18 @@ public class TileGenerator : MonoBehaviour
   public int gridHeight = 10;
 
   public AI aiPlayer;
+
+  public bool debug;
+
+  public AIChaser aiChaser;
+  public AIRunner aiRunner;
+
   public RandonCubeSetter cubeSetter;
 
   public GameObject tileTemplate;
 
   public List<Node> allNodes = new List<Node>();
+  public Node[] arrayAllNode = new Node[0];
 
   public Material black;
   public Material white;
@@ -20,28 +27,42 @@ public class TileGenerator : MonoBehaviour
   private List<GizmoConnect> hitConnections = new List<GizmoConnect>();
   private List<GizmoConnect> missConnections = new List<GizmoConnect>();
 
+  public bool doDeadzones;
+
   public List<int> xDeadZone = new List<int>();
   public List<int> zDeadZone = new List<int>();
 
-  private List<Ray> rays = new List<Ray>();
+  public bool makeCubes;
 
   void Start()
   {
     float starTime = Time.realtimeSinceStartup;
+
+    List<Node> listAllNodes = new List<Node>();
+
+    if (!doDeadzones)
+    {
+      xDeadZone = new List<int>();
+      zDeadZone = new List<int>();
+    }
 
     MapReset.tileGen = this;
 
     aiPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<AI>();
 
     // Makes all cubes on map
-    cubeSetter.MakeCubes();
+    if (cubeSetter != null && makeCubes)
+    {
+      cubeSetter.MakeCubes();
+
+    }
 
     int i = 0;    // i is the number of the cube thats being created. This is for naming
     for (int x = 0; x < gridWidth; x++)
     {
       for (int z = 0; z < gridHeight; z++)
       {
-        // if the current position isnt in a dead zone
+        // if the current position isn't in a dead zone
         if (!(xDeadZone.Contains(x) && zDeadZone.Contains(z)))
         {
           // this makes a new tile, sets it name, increments the current tile number, creates new node for tile, and inserts the new tile node in the front of the line
@@ -56,8 +77,8 @@ public class TileGenerator : MonoBehaviour
 
           newTile.GetComponent<TileInfo>().tileNode = new Node(newTile.transform);
 
-          allNodes.Insert(0, newTile.GetComponent<TileInfo>().tileNode);    // average time to build .04 seconds
-          //allNodes.Add(newTile.GetComponent<TileInfo>().tileNode);        // average time to build .1  seconds
+          //allNodes.Insert(0, newTile.GetComponent<TileInfo>().tileNode);    // average time to build .04 seconds
+          listAllNodes.Add(newTile.GetComponent<TileInfo>().tileNode);        // average time to build .1  seconds
 
           #endregion
 
@@ -67,7 +88,7 @@ public class TileGenerator : MonoBehaviour
 
           Node nodeChecker = newTile.GetComponent<TileInfo>().tileNode;
 
-          foreach (Node nodeChecked in allNodes)
+          foreach (Node nodeChecked in listAllNodes)
           {
             // if you have gotten less than two connections
             if (temp < 2)
@@ -90,6 +111,8 @@ public class TileGenerator : MonoBehaviour
                 {
                   // for gizmo add this hit to hit connections
                   hitConnections.Add(new GizmoConnect(nodeChecker, nodeChecked));
+                  nodeChecker.connections.Add(nodeChecked, 0);
+                  nodeChecked.connections.Add(nodeChecker, 0);
 
                 }
                 else
@@ -142,22 +165,35 @@ public class TileGenerator : MonoBehaviour
     }
 
     #region Pick Random Start and set camera
-    // set a random start location for the Ai
-    PickRandomStartLocation();
+    // set a random start location for the AI
+    allNodes = listAllNodes;
+
+    PickRandomStartLocationForAI();
+
+    Camera.main.transform.position = new Vector3(gridWidth / 2, Camera.main.transform.position.y, gridHeight / 2);
+
+    aiRunner.allNodes = allNodes;
+    aiChaser.allNodes = allNodes;
+    aiPlayer.allNodes = allNodes;
+
+
+
+    aiRunner.currentNode =  PickRandomStartLocationForRunner(aiRunner.gameObject);
+    aiChaser.currentNode = PickRandomStartLocationForRunner(aiChaser.gameObject);
+
     #endregion
 
-    float endTime = Time.realtimeSinceStartup;
-    Debug.Log("Start Generation took: " + (endTime - starTime));
 
+    Debug.Log("Start Generation took: " + (Time.realtimeSinceStartup - starTime) + "\n");
   }
 
-  public void PickRandomStartLocation()
+  public void PickRandomStartLocationForAI()
   {
     // get a random number between 0 and the number of nodes
     int randomNumber = Random.Range(0, allNodes.Count);
 
     // send set player to nodes position
-    allNodes[randomNumber].transform.GetComponent<TileInfo>().MoveAIToCordinates(aiPlayer.debug, aiPlayer);
+    allNodes[randomNumber].transform.GetComponent<TileInfo>().MoveAIToCordinates(aiPlayer.debug, aiPlayer.transform);
 
     // set start node to this node
     aiPlayer.startNode = allNodes[randomNumber].transform.GetComponent<TileInfo>().tileNode;
@@ -165,10 +201,21 @@ public class TileGenerator : MonoBehaviour
     // set the AIs all nodes to all nodes
     aiPlayer.allNodes = allNodes;
 
-    // set the cameras location
-    Camera.main.transform.position = new Vector3(gridWidth / 2, Camera.main.transform.position.y, gridHeight / 2);
+  }
+
+  public Node PickRandomStartLocationForRunner(GameObject ai)
+  {
+    // get a random number between 0 and the number of nodes
+    int randomNumber = Random.Range(0, allNodes.Count);
+
+    // send set player to nodes position
+    allNodes[randomNumber].transform.GetComponent<TileInfo>().MoveAIToCordinates(debug, ai.transform);
+
+    // set start node to this node
+    return allNodes[randomNumber].transform.GetComponent<TileInfo>().tileNode;
 
   }
+
 
   private void OnDrawGizmos()
   {
@@ -201,47 +248,49 @@ public class TileGenerator : MonoBehaviour
 
   public void ReCheckConnections()
   {
+    Debug.Log("Rechecking connections");
+
     hitConnections = new List<GizmoConnect>();
     missConnections = new List<GizmoConnect>();
 
+    // As a rule:
+    // Dictionaries are slower than Lists,
+    // and Lists are slower than arrays.
+    // Never use a Dictionary where you can use a List;
+    // never use a List where you can use an array.
     foreach (Node baseNode in allNodes)
     {
-      baseNode.connections = new Dictionary<Node, float>();
+      var buffer = new List<Node>(baseNode.connections.Keys);
 
-    }
-
-    foreach (Node baseNode in allNodes)
-    {
-      int temp = 0;
-      foreach (Node secondaryNode in allNodes)
+      foreach (Node connection in buffer)
       {
-        if (temp < 2)
+        if (baseNode.transform.position == connection.transform.position + new Vector3(0, 0, 1) ||
+            baseNode.transform.position == connection.transform.position + new Vector3(1, 0, 0))
         {
-          if (baseNode.transform.position == secondaryNode.transform.position + Vector3.forward ||
-              baseNode.transform.position == secondaryNode.transform.position + Vector3.right)
+          Ray ray = new Ray(baseNode.transform.position, -(baseNode.transform.position - connection.transform.position));
+          // then make another ray from the secondary node to the base node
+          Ray rayReversed = new Ray(connection.transform.position, -(connection.transform.position - baseNode.transform.position));
+
+          //System.DateTime raycastStart = System.DateTime.Now;
+          if (Physics.Raycast(ray, 1) || Physics.Raycast(rayReversed, 1))
           {
-            temp++;
+            // for gizmo add this hit to hit connections
+            baseNode.connections[connection] = 0;
+            connection.connections[baseNode] = 0;
 
-            Ray toRay = new Ray(baseNode.transform.position, -(baseNode.transform.position - secondaryNode.transform.position));
-            Ray backRay = new Ray(secondaryNode.transform.position, -(secondaryNode.transform.position - baseNode.transform.position));
+            hitConnections.Add(new GizmoConnect(baseNode, connection));
 
-            if (Physics.Raycast(toRay, 1) || Physics.Raycast(backRay, 1))
-            {
-              hitConnections.Add(new GizmoConnect(baseNode, secondaryNode));
 
-            }
-            else
-            {
-              missConnections.Add(new GizmoConnect(baseNode, secondaryNode));
+          } else
+          {
+            baseNode.connections[connection] = 1;
+            connection.connections[baseNode] = 1;
 
-              baseNode.connections.Add(secondaryNode, 1);
-              secondaryNode.connections.Add(baseNode, 1);
+            missConnections.Add(new GizmoConnect(baseNode, connection));
 
-            }
           }
         }
       }
     }
   }
-
 }

@@ -13,9 +13,13 @@ public class AI : MonoBehaviour
 
   public int moveSpeed = 10;
 
-  public List<Vector3> moveQue = new List<Vector3>();
+  public List<Node> moveQue = new List<Node>();
+
+  public List<Node> moveQueNodes = new List<Node>();
 
   public List<Node> allNodes = new List<Node>();
+
+  private Node currentNode;
 
   public int randomPointsDebug = 1;
 
@@ -24,6 +28,8 @@ public class AI : MonoBehaviour
   public bool debug = false;
 
   public bool alwaysMove = true;
+
+  private GameObject grabbedTile = null;
 
   public TileGenerator tileGen;
 
@@ -34,13 +40,20 @@ public class AI : MonoBehaviour
     #region Move to Target
     if (moveQue.Count > 0)
     {
-      Vector3 tempMove = moveQue[0];
+      Vector3 tempMove = moveQue[0].transform.position;
       tempMove.y = this.transform.position.y;
 
       transform.position = Vector3.MoveTowards(transform.position, tempMove, moveSpeed * Time.deltaTime);
 
       if (Vector3.Distance(transform.position, tempMove) < .1F)
       {
+        if (moveQueNodes[0] == moveQue[0])
+        {
+          moveQueNodes.Remove(moveQueNodes[0]);
+
+        }
+        currentNode = moveQue[0];
+
         moveQue.Remove(moveQue[0]);
 
       }
@@ -50,7 +63,7 @@ public class AI : MonoBehaviour
     // camera raycast to tiles
     #region Camera Raycast
     // if right click sends message to tile your hovering over to get a list of way points
-    if (Input.GetMouseButtonDown(1))
+    if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftShift))
     {
       Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -63,6 +76,7 @@ public class AI : MonoBehaviour
           if (moveQue.Count == 0 || !oneAtATime)
           {
             hit.transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI(debug, this);
+            moveQueNodes.Add(hit.transform.gameObject.GetComponent<TileInfo>().tileNode);
 
           }
         }
@@ -80,12 +94,48 @@ public class AI : MonoBehaviour
       {
         if (hit.transform.tag == "Tile")
         {
-          hit.transform.gameObject.GetComponent<TileInfo>().MoveAIToCordinates(debug, this);
-          startNode = hit.transform.gameObject.GetComponent<TileInfo>().tileNode;
+          AddNodeToList(hit.transform.GetComponent<TileInfo>());
+          //hit.transform.gameObject.GetComponent<TileInfo>().MoveAIToCordinates(debug, this.transform);
+          //startNode = hit.transform.gameObject.GetComponent<TileInfo>().tileNode;
 
         }
       }
     }
+
+    // move cube
+    if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftShift))
+    {
+      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+      RaycastHit hit;
+
+      if (Physics.Raycast(ray, out hit))
+      {
+        if (hit.transform.tag == "Cube")
+        {
+          grabbedTile = hit.transform.gameObject;
+
+        }
+      }
+    }
+
+    if (Input.GetMouseButton(1) && grabbedTile != null)
+    {
+      tileGen.ReCheckConnections();
+
+      Vector3 temp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+      temp.y = 0;
+
+      grabbedTile.transform.position = temp;
+
+    }
+
+    if (Input.GetMouseButtonUp(1) && grabbedTile != null)
+    {
+      grabbedTile = null;
+
+    }
+
     #endregion
 
     // debugging tools
@@ -97,7 +147,8 @@ public class AI : MonoBehaviour
       {
         int randomNumber = Random.Range(0, allNodes.Count);
 
-        allNodes[randomNumber].transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI(debug, this);
+        AddNodeToList(allNodes[randomNumber].transform.gameObject.GetComponent<TileInfo>());
+        //allNodes[randomNumber].transform.gameObject.GetComponent<TileInfo>().SendCordinatesToAI(debug, this);
 
       }
     }
@@ -112,7 +163,7 @@ public class AI : MonoBehaviour
       }
     }
 
-    // if the AI is set to always move when there are no way points left it generates a new waypoint
+    // if the AI is set to always move when there are no way points left it generates a new way point
     if (moveQue.Count == 0 && alwaysMove)
     {
       int randomNumber = Random.Range(0, allNodes.Count);
@@ -129,7 +180,59 @@ public class AI : MonoBehaviour
   {
     if (other.tag == "Cube")
     {
-      tileGen.PickRandomStartLocation();
+      if (moveQue.Count == 0)
+      {
+        tileGen.PickRandomStartLocationForAI();
+
+      }
+
+      else
+      {
+        this.transform.position = moveQue[0].transform.position;
+
+      }
+    }
+  }
+
+  private void RePathfind()
+  {
+    moveQue = new List<Node>();
+
+    Node lastNode = currentNode;
+
+    foreach (Node moveNode in moveQueNodes)
+    {
+      List<Node> nodeList = PathFinder.DijkstraNodes(lastNode, moveNode);
+
+      foreach (Node waypointNode in nodeList)
+      {
+        moveQue.Add(waypointNode);
+        lastNode = waypointNode;
+
+      }
+    }
+  }
+
+  private void AddNodeToList(TileInfo currentTileInfo)
+  {
+    currentTileInfo.SendCordinatesToAI(debug, this);
+
+    List<Node> nodeList = PathFinder.DijkstraNodes(startNode, currentTileInfo.tileNode);
+
+    foreach (Node node in nodeList)
+    {
+      moveQue.Add(node);
+
+    }
+
+    moveQueNodes.Add(currentTileInfo.tileNode);
+
+    startNode = currentTileInfo.tileNode;
+
+    if (debug)
+    {
+      currentTileInfo.tileNode.DisplayConnections();
+
     }
   }
 }

@@ -6,9 +6,23 @@ using UnityEngine;
 /** Node Does:
  * Container that holds nodeConnections and links to a transform
  */
-public class Node
+ [CreateAssetMenu]
+public class Node : ScriptableObject
 {
   public Dictionary<Node, float> connections = new Dictionary<Node, float>();
+
+
+  // Steve's alternative
+  private int[] connectionState = new int[4];
+  private bool[] connectionEnableState = new bool[4];
+
+  private bool CanConnect(int direction)
+  {
+    return connectionState[direction] == 1 && connectionEnableState[direction];
+
+  }
+
+
 
   public Transform transform;
 

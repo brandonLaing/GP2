@@ -11,7 +11,7 @@ public class TileInfo : MonoBehaviour
   public Node tileNode;   // node that holds info about his tile
 
   // sets the AI to this nodes transform
-  public void MoveAIToCordinates(bool debug, AI ai)
+  public void MoveAIToCordinates(bool debug, Transform ai)
   {
     if (debug)
     {
@@ -19,12 +19,12 @@ public class TileInfo : MonoBehaviour
 
     }
 
-    ai.transform.position = new Vector3(this.transform.position.x, ai.transform.position.y, this.transform.position.z);
+    ai.transform.position = new Vector3(this.transform.position.x, ai.position.y, this.transform.position.z);
 
   }
 
   // creates list of way points from the A* system if it fails it can send a debug message
-  public void SendCordinatesToAI(bool debug, AI ai)
+  public List<Node> SendCordinatesToAI(bool debug, AI ai)
   {
     // if debugging is enables it shows your choices connections
     if (debug)
@@ -34,16 +34,16 @@ public class TileInfo : MonoBehaviour
     }
 
     // makes new vector3 list for the way points
-    List<Vector3> vectorList;
-
+    List<Node> nodeList;
+    
     // tries to make a A* way point list then add those points to the vectorList then sets the new start node to this node
     try
     {
-      vectorList = PathFinder.Dijkstra(ai.startNode, this.tileNode);
+      nodeList = PathFinder.DijkstraNodes(ai.startNode, this.tileNode);
 
-      foreach (Vector3 vector3 in vectorList)
+      foreach (Node node in nodeList)
       {
-        ai.moveQue.Add(vector3);
+        ai.moveQue.Add(node);
 
       }
 
@@ -57,5 +57,7 @@ public class TileInfo : MonoBehaviour
 
       }
     }
+
+    return null;
   }
 }

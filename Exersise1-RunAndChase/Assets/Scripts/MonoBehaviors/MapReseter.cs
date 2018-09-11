@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MapReset : MonoBehaviour
-{
-  public static TileGenerator tileGen;
-
-	void Update ()
+// this reloads the scene on certain button clicks
+public class MapReseter : MonoBehaviour
+{ 
+  void Update()
   {
-    // re loads the scene
-    if (Input.GetKeyDown(KeyCode.Backslash) && !Input.GetKey(KeyCode.LeftShift))
+    if (Input.GetKeyDown(KeyCode.Backslash))
     {
       SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
