@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+[RequireComponent(typeof(FireControlsScript))]
 public class PlayerController : NetworkBehaviour
 {
   public Camera playerCamera;
@@ -15,11 +16,16 @@ public class PlayerController : NetworkBehaviour
   private float maxView = 90.0F;
   private float minView = -90.0F;
 
+  private FireControlsScript fireController;
+
   private void Start()
   {
+    fireController = GetComponent<FireControlsScript>();
+
     if (!CheckIfIsLocalPlayer())
     {
       this.enabled = false;
+      fireController.enabled = false;
     }
   }
   public float speed = 10f;
