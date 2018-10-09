@@ -13,6 +13,12 @@ public class ChatController : MonoBehaviour {
 
   public List<string> messages = new List<string>();
 
+  private void Start()
+  {
+    
+  }
+
+
   /** OnChatMessageReceived:
    * Adds the chat message to the list of messages
    */

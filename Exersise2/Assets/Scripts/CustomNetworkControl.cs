@@ -150,4 +150,13 @@ public class CustomNetworkControl : NetworkManager
   {
     client.Send(PlayerSendChatMessageId, new StringMessage(message));
   }
+
+  private void Update()
+  {
+    if (Input.GetKeyDown(KeyCode.Escape))
+    {
+      Application.Quit();
+    }
+  }
+
 }

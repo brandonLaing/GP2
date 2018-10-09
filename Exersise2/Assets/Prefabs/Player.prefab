@@ -137,6 +137,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4757682068652982}
   - component: {fileID: 114759729321736936}
+  - component: {fileID: 114342435265702542}
+  - component: {fileID: 114621867446430020}
   - component: {fileID: 114520191332093432}
   - component: {fileID: 143856638559382292}
   - component: {fileID: 114473798574955264}
@@ -144,7 +146,6 @@ GameObject:
   - component: {fileID: 23204772246611072}
   - component: {fileID: 136233017286010324}
   - component: {fileID: 114517952592395602}
-  - component: {fileID: 114342435265702542}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -527,6 +528,9 @@ MonoBehaviour:
   firePoint: {fileID: 4229508620424442}
   projectile: {fileID: 1101273348466408, guid: 9f08d5faaac7c4444869f6e42db69087, type: 2}
   launchForce: 100
+  myScore: {fileID: 114621867446430020}
+  hitEffect: {fileID: 198739911033598290, guid: 68bb56e6945424e40bc0c70ef0dd4524,
+    type: 2}
 --- !u!114 &114473798574955264
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -599,6 +603,20 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114621867446430020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1947301359471264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c0d955290ae05d47825a0ef67b22eb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
+  playerName: 
+  spacePressedCount: 0
 --- !u!114 &114759729321736936
 MonoBehaviour:
   m_ObjectHideFlags: 1

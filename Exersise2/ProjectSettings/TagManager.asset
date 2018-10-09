@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NetworkController
   - ChatController
+  - Projectile
   layers:
   - Default
   - TransparentFX

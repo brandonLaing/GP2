@@ -33,7 +33,7 @@ public class ChatPannelController : MonoBehaviour
       Debug.LogError("Couldnt get a networkController");
     }
 
-    myChat = GameObject.FindGameObjectWithTag("ChatController").GetComponent<ChatController>();
+    myChat = GetComponentInParent<ChatController>();
   }
 
   private void Update()
