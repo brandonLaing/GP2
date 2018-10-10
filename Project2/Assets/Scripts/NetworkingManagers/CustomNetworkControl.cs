@@ -47,7 +47,7 @@ public class CustomNetworkControl : NetworkManager
     RegisterSeverListeners();
     RegisterClientListeners();
   }
-
+  
   /** StartNetworkClient:
    * this sets this user to be a client
    */

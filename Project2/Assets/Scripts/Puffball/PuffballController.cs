@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class PuffballController : MonoBehaviour
 {
+  // keep track of owning player
   public PlayerScore owningPlayer;
-  public bool destroyPuffBall = true;
-  private float liveTime = 20F;
-  private float sinkTime = 1F;
 
-  private void Start()
+  [Header("Destruction")]
+  public bool destroyPuffBall = true;
+  public float liveTime = 20F;
+  public float sinkTime = 1F;
+
+  private void Awake()
   {
     if (destroyPuffBall)
     {

@@ -8,15 +8,12 @@ public class ChatController : MonoBehaviour {
   private Dictionary<int, string> namesByConnectionId = new Dictionary<int, string>();
   private Dictionary<string, int> connectionIdsByName = new Dictionary<string, int>();
 
+  private Color[] playerColors = { Color.red, Color.blue, Color.green, Color.black, Color.white, Color.yellow };
+
   public int maxNameLength = 20;
-  private string localPlayerName;
+  public string localPlayerName;
 
   public List<string> messages = new List<string>();
-
-  private void Start()
-  {
-    
-  }
 
   public string GetPlayerName()
   {
@@ -103,9 +100,18 @@ public class ChatController : MonoBehaviour {
     return playerName;
 
   }
+}
 
-  private void Awake()
+class PlayerConnectionInfo
+{
+  public int connectionId;
+  public string playerName;
+  public Color playerColor;
+
+  public PlayerConnectionInfo(int connectionId, string playerName, Color playerColor)
   {
-    Debug.Log("Chat's awake");
+    this.connectionId = connectionId;
+    this.playerName = playerName;
+    this.playerColor = playerColor;
   }
 }

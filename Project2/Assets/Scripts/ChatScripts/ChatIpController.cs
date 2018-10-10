@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿/**
+ * This will get the ip from the network controller and display it to a text box
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +11,10 @@ public class ChatIpController : NetworkBehaviour
 {
   public Text IpTextBox;
 
-  private ChatController myChat;
   private CustomNetworkControl myNetworkControl;
 
   private void Start()
   {
-    myChat = GetComponentInParent<ChatController>();
-
     try
     {
       myNetworkControl = GameObject.FindGameObjectWithTag("NetworkController").GetComponent<CustomNetworkControl>();
@@ -26,6 +26,7 @@ public class ChatIpController : NetworkBehaviour
 
     if (isServer)
     {
+      gameObject.SetActive(true);
       IpTextBox.text += myNetworkControl.networkAddress;
     }
     else
