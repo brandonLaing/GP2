@@ -4,82 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PathFinder
-{
-  /**
-  //public static List<Vector3> Dijkstra(Node startNode, Node endNode)
-  //{   float starTime = Time.realtimeSinceStartup;
-    
-  //  List<Vector3> waypoints = new List<Vector3>();
+{ 
 
-  //  // open list, closed list
-  //  List<PathfindingNode> openList = new List<PathfindingNode>(), closedList = new List<PathfindingNode>();
-
-  //  Dictionary<Node, PathfindingNode> pathfindingNodes = new Dictionary<Node, PathfindingNode>();
-
-  //  pathfindingNodes.Add(startNode, new PathfindingNode(startNode));
-
-  //  openList.Add(pathfindingNodes[startNode]);
-
-
-  //  while (!DoesListContainNode(endNode, closedList) && openList.Count > 0)
-  //  {
-  //    openList.Sort();
-  //    PathfindingNode smallestCostSoFar = openList[0];
-
-  //    foreach (Node connectedNode in smallestCostSoFar.graphNode.connections.Keys)
-  //    {
-  //      if (smallestCostSoFar.graphNode.connections[connectedNode] != 0)
-  //      {
-  //        if (!DoesListContainNode(connectedNode, closedList))
-  //        {
-  //          if (!DoesListContainNode(connectedNode, openList))
-  //          {
-  //            float costToConnected = smallestCostSoFar.costSoFar + smallestCostSoFar.graphNode.connections[connectedNode] + Vector3.Distance(connectedNode.transform.position, endNode.transform.position);
-  //            PathfindingNode predecessor = smallestCostSoFar;
-
-  //            pathfindingNodes.Add(connectedNode, new PathfindingNode(connectedNode, costToConnected, predecessor));
-  //            openList.Add(pathfindingNodes[connectedNode]);
-
-
-  //          }
-  //          else
-  //          {
-  //            float currentCostToTarget = pathfindingNodes[connectedNode].costSoFar;
-  //            float costToTargetThroughCurrentNode = smallestCostSoFar.costSoFar +  smallestCostSoFar.graphNode.connections[connectedNode];
-
-  //            if (costToTargetThroughCurrentNode < currentCostToTarget)
-  //            {
-  //              pathfindingNodes[connectedNode].costSoFar = costToTargetThroughCurrentNode;
-  //              pathfindingNodes[connectedNode].predecessor = smallestCostSoFar;
-
-  //            }
-  //          }
-  //        }
-  //      }
-  //    }
-
-  //    closedList.Add(smallestCostSoFar);
-  //    openList.Remove(smallestCostSoFar);
-
-  //  }
-
-  //  for (PathfindingNode waypoint = pathfindingNodes[endNode]; waypoint != null; waypoint = waypoint.predecessor)
-  //  {
-  //    waypoints.Add(waypoint.graphNode.transform.position);
-
-  //  }
-
-  //  waypoints.Reverse();
-
-  //  //Debug.Log("Finding path took: " + (Time.realtimeSinceStartup - starTime) + "\n");
-
-  //  return waypoints;
-  //}
-  */
-
-  /**
   public static List<Node> DijkstraNodes(Node startNode, Node endNode)
   {
+
     float starTime = Time.realtimeSinceStartup;
 
     List<Node> waypoints = new List<Node>();
@@ -96,89 +25,34 @@ public class PathFinder
 
     while (!DoesListContainNode(endNode, closedList) && openList.Count > 0)
     {
-      openList.Sort();
-      PathfindingNode smallestCostSoFar = openList[0];
-
-      foreach (Node connectedNode in smallestCostSoFar.graphNode.connections.Keys)
-      {
-        if (smallestCostSoFar.graphNode.connections[connectedNode] != 0)
-        {
-          if (!DoesListContainNode(connectedNode, closedList))
-          {
-            if (!DoesListContainNode(connectedNode, openList))
-            {
-              float costToConnected = smallestCostSoFar.costSoFar + smallestCostSoFar.graphNode.connections[connectedNode] + Vector3.Distance(connectedNode.transform.position, endNode.transform.position);
-              PathfindingNode predecessor = smallestCostSoFar;
-
-              pathfindingNodes.Add(connectedNode, new PathfindingNode(connectedNode, costToConnected, predecessor));
-              openList.Add(pathfindingNodes[connectedNode]);
-
-
-            }
-            else
-            {
-              float currentCostToTarget = pathfindingNodes[connectedNode].costSoFar;
-              float costToTargetThroughCurrentNode = smallestCostSoFar.costSoFar + smallestCostSoFar.graphNode.connections[connectedNode];
-
-              if (costToTargetThroughCurrentNode < currentCostToTarget)
-              {
-                pathfindingNodes[connectedNode].costSoFar = costToTargetThroughCurrentNode;
-                pathfindingNodes[connectedNode].predecessor = smallestCostSoFar;
-
-              }
-            }
-          }
-        }
-      }
-
-      closedList.Add(smallestCostSoFar);
-      openList.Remove(smallestCostSoFar);
-
-    }
-
-    for (PathfindingNode waypoint = pathfindingNodes[endNode]; waypoint != null; waypoint = waypoint.predecessor)
-    {
-      waypoints.Add(waypoint.graphNode);
-
-    }
-
-    waypoints.Reverse();
-
-    //Debug.Log("Finding path took: " + (Time.realtimeSinceStartup - starTime) + "\n");
-
-    return waypoints;
-  }
-
-  */
-
-  public static List<Node> DijkstraNodes(Node startNode, Node endNode)
-  {
-    float starTime = Time.realtimeSinceStartup;
-
-    List<Node> waypoints = new List<Node>();
-
-    // open list, closed list
-    List<PathfindingNode> openList = new List<PathfindingNode>(), closedList = new List<PathfindingNode>();
-
-    Dictionary<Node, PathfindingNode> pathfindingNodes = new Dictionary<Node, PathfindingNode>();
-
-    pathfindingNodes.Add(startNode, new PathfindingNode(startNode));
-
-    openList.Add(pathfindingNodes[startNode]);
-
-
-    while (!DoesListContainNode(endNode, closedList) && openList.Count > 0)
-    {
+      
       openList.Sort();
       PathfindingNode smallestCostSoFar = openList[0];
 
       for (int i = 0; i < smallestCostSoFar.graphNode.connections.Count; i++)
       {
         NodeConnection connectedNode = smallestCostSoFar.graphNode.connections[i];
+                
         if (smallestCostSoFar.graphNode.connections[i].connected && !DoesListContainNode(connectedNode.node, closedList))
         {
           if (!DoesListContainNode(connectedNode.node, openList))
           {
+            // SS: I haven't traced the behavior, but this is definitely incorrect.
+            // costToConnect will ultimately become the costSoFar attached to a PathfindingNode,
+            // and it adds the previous node's costSoFar, plus the connection, plus the heuristic estimate,
+            // giving an estimated total path length. And then, when this node becomes the smallest on the
+            // open list, costToConnect will be greatly overestimated, since smallestCostSoFar.costSoFar
+            // will be nearly the full length of the path, and then you're adding on an additional
+            // connection cost as well as an additional (if slightly reduced) heuristic estimate.
+            //
+            // I expect this will result in Dikstra-like behavior, because the further a node is along
+            // the path, the more overestimated its overall cost is, making it less likely to sort as
+            // the smallest cost so far, giving preference to nodes further back, resulting in 
+            // increased fill (many more nodes being considered than need to be to return an optimal path).
+            // This is why the frame rate drops below 60 FPS when many agents pathfind in the same frame.
+            //
+            // Your PathfindingNode should keep the true cost and the heuristic cost separate to prevent this.
+
             float costToConnect = smallestCostSoFar.costSoFar + connectedNode.cost + Vector3.Distance(connectedNode.node.nodeTransform.position, endNode.nodeTransform.position);
             PathfindingNode predecessor = smallestCostSoFar;
 
@@ -188,6 +62,9 @@ public class PathFinder
           } 
           else
           {
+            // SS: As above, your costSoFar values represent the complete path, not the known cost so far,
+            // and because of the previous errors, it's possible for this to cause sub-optimal paths to be
+            // returned, for instance if the connection cost is lower than the heuristic-estimate-based error.
             float currenCostToTarget = pathfindingNodes[connectedNode.node].costSoFar;
             float costToTargetThoughCurretNode = smallestCostSoFar.costSoFar + smallestCostSoFar.graphNode.connections[i].cost;
 
@@ -201,40 +78,6 @@ public class PathFinder
         }
       }
 
-      /**
-      //foreach (Node connectedNode in smallestCostSoFar.graphNode.connections.Keys)
-      //{
-      //  if (smallestCostSoFar.graphNode.connections[connectedNode] != 0)
-      //  {
-      //    if (!DoesListContainNode(connectedNode, closedList))
-      //    {
-      //      if (!DoesListContainNode(connectedNode, openList))
-      //      {
-      //        float costToConnected = smallestCostSoFar.costSoFar + smallestCostSoFar.graphNode.connections[connectedNode] + Vector3.Distance(connectedNode.transform.position, endNode.transform.position);
-      //        PathfindingNode predecessor = smallestCostSoFar;
-
-      //        pathfindingNodes.Add(connectedNode, new PathfindingNode(connectedNode, costToConnected, predecessor));
-      //        openList.Add(pathfindingNodes[connectedNode]);
-
-
-      //      }
-      //      else
-      //      {
-      //        float currentCostToTarget = pathfindingNodes[connectedNode].costSoFar;
-      //        float costToTargetThroughCurrentNode = smallestCostSoFar.costSoFar + smallestCostSoFar.graphNode.connections[connectedNode];
-
-      //        if (costToTargetThroughCurrentNode < currentCostToTarget)
-      //        {
-      //          pathfindingNodes[connectedNode].costSoFar = costToTargetThroughCurrentNode;
-      //          pathfindingNodes[connectedNode].predecessor = smallestCostSoFar;
-
-      //        }
-      //      }
-      //    }
-      //  }
-      //}
-      */
-
       closedList.Add(smallestCostSoFar);
       openList.Remove(smallestCostSoFar);
 
@@ -248,81 +91,9 @@ public class PathFinder
 
     waypoints.Reverse();
 
-    //Debug.Log("Finding path took: " + (Time.realtimeSinceStartup - starTime) + "\n");
-
     return waypoints;
   }
-
-  public static Node FindNextFurthestNode (Node currentNode,GameObject runnerAI, GameObject chaserAI)
-  {
-    List<Node> openList = new List<Node>(), closedList = new List<Node>();
-
-    openList.Add(currentNode);
-
-    Node destinatinNode = null;
-
-    while (openList.Count > 0 && destinatinNode == null)
-    {
-      Node checkingNode = openList[0];
-      Node furtherstNode = openList[0];
-
-      for (int i = 0; i < checkingNode.connections.Count; i++)
-      {
-        NodeConnection connection = checkingNode.connections[i];
-
-        if (checkingNode.connections[i].connected)
-        {
-          if (!DoesListContainNode(connection.node, closedList))
-          {
-            if (!DoesListContainNode(connection.node, openList))
-            {
-              if (Vector3.Distance(chaserAI.transform.position, currentNode.nodeTransform.position + Vector3.up) > Vector3.Distance(runnerAI.transform.position, chaserAI.transform.position))
-              {
-                furtherstNode = checkingNode;
-
-              }
-            }
-          }
-        }
-      }
-
-      if (furtherstNode != currentNode)
-      {
-        return furtherstNode;
-
-      }
-
-      /**
-      foreach(Node connectionNode in checkingNode.connections.Keys)
-      {
-        if (checkingNode.connections[connectionNode] != 0)
-        {
-          if (!DoesListContainNode(connectionNode, closedList))
-          {
-            if (!DoesListContainNode(connectionNode, openList))
-            {
-              if (Vector3.Distance(chaserAI.transform.position, checkingNode.transform.position + Vector3.up) > Vector3.Distance(runnerAI.transform.position, chaserAI.transform.position))
-              {
-                return checkingNode;
-
-              }
-
-              openList.Add(connectionNode);
-
-            }
-          }
-        }
-      }
-      */
-
-      closedList.Add(checkingNode);
-      openList.Remove(checkingNode);
-
-    }
-
-    return null;
-
-  }
+    
 
   private static bool DoesListContainNode(Node searchedNode, List<PathfindingNode> pathfindingNodeList)
   {
@@ -339,16 +110,5 @@ public class PathFinder
 
   }
 
-  private static bool DoesListContainNode(Node searchedNode, List<Node> nodeList)
-  {
-    foreach (Node pathfindingNode in nodeList)
-    {
-      if (pathfindingNode == searchedNode)
-      {
-        return true;
-      }
-    }
 
-    return false;
-  }
 }
