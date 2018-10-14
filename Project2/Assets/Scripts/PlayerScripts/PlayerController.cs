@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+
+
 
 [RequireComponent(typeof(FireControlsScript))]
 public class PlayerController : NetworkBehaviour
@@ -18,9 +21,15 @@ public class PlayerController : NetworkBehaviour
 
   private FireControlsScript fireController;
 
+  public float speed = 10f;
+
+
+
+
   private void Start()
   {
     fireController = GetComponent<FireControlsScript>();
+
 
     if (!CheckIfIsLocalPlayer())
     {
@@ -28,7 +37,6 @@ public class PlayerController : NetworkBehaviour
       fireController.enabled = false;
     }
   }
-  public float speed = 10f;
   public override void OnStartLocalPlayer()
   {
     GetComponent<MeshRenderer>().material.color = Color.blue;
@@ -39,7 +47,6 @@ public class PlayerController : NetworkBehaviour
   {
     MovementControls();
     CameraControls();
-
   }
 
   private void MovementControls()

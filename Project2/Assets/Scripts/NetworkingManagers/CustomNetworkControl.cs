@@ -43,7 +43,13 @@ public class CustomNetworkControl : NetworkManager
   {
     Debug.Log("Starting host and registering handler");
 
+
+    Debug.LogError(GetLocalIP());
+
     StartHost();
+
+    networkAddress = GetLocalIP();
+
     RegisterSeverListeners();
     RegisterClientListeners();
   }
@@ -125,6 +131,15 @@ public class CustomNetworkControl : NetworkManager
 
     string senderName = myChat.GetNameById(netMsg.conn.connectionId);
 
+    foreach (NetworkInstanceId n in netMsg.conn.clientOwnedObjects)
+    {
+      GameObject G = NetworkServer.FindLocalObject(n);
+      if (G.GetComponent<PlayerMatUpdate>() != null)
+      {
+        senderName += " (" + G.GetComponent<PlayerMatUpdate>().GetColorName() + ") ";
+      }
+    }
+
     ChatMessage chatMessage = new ChatMessage() { sender = senderName, message = message };
     NetworkServer.SendToAll(ChatMessageReceived, chatMessage);
   }
@@ -136,6 +151,16 @@ public class CustomNetworkControl : NetworkManager
   {
     string playerName = netMsg.ReadMessage<StringMessage>().value;
     playerName = myChat.SetPlayerName(playerName, netMsg.conn.connectionId);
+
+    // add stuff from 128 to 135 and set the player name in score
+    foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+    {
+      PlayerScore pS = player.GetComponent<PlayerScore>();
+      if (pS != null)
+      {
+        pS.playerName = playerName;
+      }
+    }
 
     NetworkServer.SendToClient(netMsg.conn.connectionId, AssignPlayerNameMessage, new StringMessage(playerName));
     NetworkServer.SendToAll(PlayerJoinedGameMessage, new StringMessage(playerName));
@@ -159,4 +184,60 @@ public class CustomNetworkControl : NetworkManager
     }
   }
 
+
+  string GetLocalIP()
+  {
+    string hostName = System.Net.Dns.GetHostName();
+
+    foreach (System.Net.IPAddress ip in System.Net.Dns.GetHostEntry(hostName).AddressList)
+    {
+      try
+      {
+
+      if (ValidateIp(ip))
+      {
+        return ip.ToString();
+      }
+      }
+      catch
+      {
+        Debug.Log(ip);
+
+      }
+    }
+
+    return string.Empty;
+  }
+
+  private bool ValidateIp(System.Net.IPAddress ip)
+  {
+    string[] ipSplit = ip.ToString().Trim().Split('.');
+    bool temp = false;
+    for (int i = 0; i < ipSplit.Length; i++)
+    {
+      if (i == 0)
+      {
+        if (Convert.ToInt16(ipSplit[i]) >= 1 && Convert.ToInt16(ipSplit[i]) <= 233)
+        {
+          temp = true;
+        }
+        else
+        {
+          return false;
+        }
+      }
+      else
+      {
+        if (Convert.ToInt16(ipSplit[i]) >=0 && Convert.ToInt16(ipSplit[i]) < 255)
+        {
+          temp = true;
+        }
+        else
+        {
+          return false;
+        }
+      }
+    }
+    return temp;
+  }
 }

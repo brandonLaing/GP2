@@ -8,8 +8,6 @@ public class ChatController : MonoBehaviour {
   private Dictionary<int, string> namesByConnectionId = new Dictionary<int, string>();
   private Dictionary<string, int> connectionIdsByName = new Dictionary<string, int>();
 
-  private Color[] playerColors = { Color.red, Color.blue, Color.green, Color.black, Color.white, Color.yellow };
-
   public int maxNameLength = 20;
   public string localPlayerName;
 

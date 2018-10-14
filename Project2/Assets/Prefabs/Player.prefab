@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 114759729321736936}
   - component: {fileID: 114342435265702542}
   - component: {fileID: 114621867446430020}
+  - component: {fileID: 114035979770958708}
   - component: {fileID: 114520191332093432}
   - component: {fileID: 143856638559382292}
   - component: {fileID: 114473798574955264}
@@ -148,7 +149,7 @@ GameObject:
   - component: {fileID: 114517952592395602}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -319,7 +320,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -514,6 +515,26 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1947301359471264}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114035979770958708
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1947301359471264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f038b6343ce769f4187252619a4c1de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myMat: 0
+  myMaterials:
+  - {fileID: 2100000, guid: 598358c13042dbd4a8758d4c35877cbc, type: 2}
+  - {fileID: 2100000, guid: fdfbc56de7a0b0e4c97aa74bb765cc80, type: 2}
+  - {fileID: 2100000, guid: 52a8c75c76e15d740ab097ce16f5dbba, type: 2}
+  - {fileID: 2100000, guid: e30d3d6349202b541b5d2a5e6d29a336, type: 2}
+  - {fileID: 2100000, guid: 979c31ac2e711f0458d099a9b7cab88b, type: 2}
+  - {fileID: 2100000, guid: fcca0527c63bd3d4394c1d8f1b40ea8e, type: 2}
+  currentMat: 0
 --- !u!114 &114342435265702542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -616,7 +637,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   playerName: 
-  spacePressedCount: 0
+  MaxScore: 20
+  gameController: {fileID: 0}
 --- !u!114 &114759729321736936
 MonoBehaviour:
   m_ObjectHideFlags: 1

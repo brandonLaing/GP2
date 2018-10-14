@@ -12,6 +12,10 @@ public class PlayerScore : NetworkBehaviour {
 
   private ScoreBoardController scoreBoard;
 
+  public int MaxScore = 20;
+
+  public GameController gameController;
+
   public int Score
   {
     get
@@ -44,6 +48,8 @@ public class PlayerScore : NetworkBehaviour {
       myChat = GameObject.FindGameObjectWithTag("ChatController").GetComponent<ChatController>();
     }
 
+    gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
     scoreBoard = GameObject.FindGameObjectWithTag("ScoreBoard").GetComponent<ScoreBoardController>();
     scoreBoard.AddNewPlayer(this);
   }
@@ -70,6 +76,15 @@ public class PlayerScore : NetworkBehaviour {
     if (scoreBoard.GetDisplayedScore(this) != Score)
     {
       scoreBoard.UpdatePlayerScore(this);
+    }
+
+    CheckScore();
+  }
+  private void CheckScore()
+  {
+    if (score >= MaxScore)
+    {
+      gameController.EndGame(this.gameObject);
     }
   }
 

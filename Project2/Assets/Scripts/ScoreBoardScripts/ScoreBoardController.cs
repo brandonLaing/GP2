@@ -55,6 +55,17 @@ public class ScoreBoardController : MonoBehaviour
     }
   }
 
+  public void UpdatePlayerName(PlayerScore playerScore, string name)
+  {
+    foreach (ScoreBoardPlayerInfo playerInfo in playerInfos)
+    {
+      if (playerScore == playerInfo.associatedPlayer)
+      {
+        playerInfo.SetNameText(name);
+      }
+    }
+  }
+
   // addes a new player and sets everything up
   public void AddNewPlayer(PlayerScore playerScore)
   {
