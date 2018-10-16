@@ -27,9 +27,9 @@ public class CustomNetworkControl : NetworkManager
     public string message;
   }
 
-  internal void ClientDisconnect()
+  public void ClientDisconnect()
   {
-    Application.Quit();
+    this.StopClient();
   }
 
   /** OnClientConnect:
@@ -40,6 +40,11 @@ public class CustomNetworkControl : NetworkManager
     Debug.Log("Received connect message");
     myChat = GameObject.FindGameObjectWithTag("ChatController").GetComponent<ChatController>();
     client.Send(PlayerNameMessage, new StringMessage(playerName));
+  }
+
+  public void ServerDisconnect()
+  {
+    this.StopServer();
   }
 
   /** StartNetworkHost:

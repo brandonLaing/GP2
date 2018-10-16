@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class EndCameraController : MonoBehaviour
+public class EndCameraController : NetworkBehaviour
 {
   public Camera cam;
   public GameObject focusedPlayer;
@@ -27,7 +28,15 @@ public class EndCameraController : MonoBehaviour
   IEnumerator StartEndCountdown()
   {
     yield return new WaitForSeconds(5);
-    GameObject.FindGameObjectWithTag("NetworkController").GetComponent<CustomNetworkControl>().ClientDisconnect();
+    if (isClient)
+    {
+      GameObject.FindGameObjectWithTag("NetworkController").GetComponent<CustomNetworkControl>().ClientDisconnect();
+
+    }
+    if (isServer)
+    {
+      GameObject.FindGameObjectWithTag("NetworkController").GetComponent<CustomNetworkControl>().ServerDisconnect();
+    }
   }
 
   public void Showcase(GameObject player)
