@@ -79,7 +79,11 @@ public class PlayerScore : NetworkBehaviour {
     }
 
     CheckScore();
+
+    scoreBoard.UpdatePlayerName(this);
+
   }
+
   private void CheckScore()
   {
     if (score >= MaxScore)

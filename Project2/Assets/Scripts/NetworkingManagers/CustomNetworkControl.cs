@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class CustomNetworkControl : NetworkManager
 {
   public string playerName;
+  public string ipAdress;
   private ChatController myChat;
 
   #region Const network Id message numbers
@@ -43,12 +44,10 @@ public class CustomNetworkControl : NetworkManager
   {
     Debug.Log("Starting host and registering handler");
 
-
-    Debug.LogError(GetLocalIP());
-
     StartHost();
 
     networkAddress = GetLocalIP();
+    ipAdress = GetLocalIP();
 
     RegisterSeverListeners();
     RegisterClientListeners();
@@ -60,6 +59,14 @@ public class CustomNetworkControl : NetworkManager
   public void _StartNetworkClient()
   {
     Debug.Log("Starting client and registering handler");
+    if (ipAdress != null)
+    {
+      networkAddress = ipAdress;
+    }
+    else
+    {
+      networkAddress = "localhost";
+    }
 
     StartClient();
     RegisterClientListeners();
@@ -184,6 +191,17 @@ public class CustomNetworkControl : NetworkManager
     }
   }
 
+  public void UpdateIpFromInputBox(string ip)
+  {
+    Debug.Log("updateing ip");
+
+    if (ValidateIp(ip))
+    {
+      ipAdress = ip;
+      networkAddress = ip;
+
+    }
+  }
 
   string GetLocalIP()
   {
@@ -239,5 +257,36 @@ public class CustomNetworkControl : NetworkManager
       }
     }
     return temp;
+  }
+
+  private bool ValidateIp(string ip)
+  {
+    string[] ipSplit = ip.ToString().Trim().Split('.');
+    bool temp = false;
+
+    if (ipSplit.Length != 4)
+    {
+      return false;
+    }
+
+    for (int i = 0; i < ipSplit.Length; i++)
+    {
+      if (i == 0)
+      {
+        if (!(Convert.ToInt16(ipSplit[i]) >= 1 && Convert.ToInt16(ipSplit[i]) <= 233))
+        {
+          return false;
+        }
+      }
+      else
+      {
+        if (!(Convert.ToInt16(ipSplit[i]) >= 0 && Convert.ToInt16(ipSplit[i]) < 255))
+        {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 }
