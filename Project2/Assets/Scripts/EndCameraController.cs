@@ -6,6 +6,7 @@ public class EndCameraController : MonoBehaviour
 {
   public Camera cam;
   public GameObject focusedPlayer;
+  bool startingCountdown;
 
   private void Update()
   {
@@ -15,7 +16,18 @@ public class EndCameraController : MonoBehaviour
       transform.LookAt(focusedPlayer.transform);
       transform.Rotate(Vector3.up, 5);
 
+      if (!startingCountdown)
+      {
+        StartCoroutine(StartEndCountdown());
+        startingCountdown = !startingCountdown;
+      }
     }
+  }
+
+  IEnumerator StartEndCountdown()
+  {
+    yield return new WaitForSeconds(5);
+    GameObject.FindGameObjectWithTag("NetworkController").GetComponent<CustomNetworkControl>().ClientDisconnect();
   }
 
   public void Showcase(GameObject player)

@@ -27,6 +27,11 @@ public class CustomNetworkControl : NetworkManager
     public string message;
   }
 
+  internal void ClientDisconnect()
+  {
+    Application.Quit();
+  }
+
   /** OnClientConnect:
    * Called when connected to server and sends back info on its player name back to the server
    */
@@ -159,15 +164,6 @@ public class CustomNetworkControl : NetworkManager
     string playerName = netMsg.ReadMessage<StringMessage>().value;
     playerName = myChat.SetPlayerName(playerName, netMsg.conn.connectionId);
 
-    // add stuff from 128 to 135 and set the player name in score
-    foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
-    {
-      PlayerScore pS = player.GetComponent<PlayerScore>();
-      if (pS != null)
-      {
-        pS.playerName = playerName;
-      }
-    }
 
     NetworkServer.SendToClient(netMsg.conn.connectionId, AssignPlayerNameMessage, new StringMessage(playerName));
     NetworkServer.SendToAll(PlayerJoinedGameMessage, new StringMessage(playerName));

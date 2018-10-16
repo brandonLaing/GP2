@@ -46,12 +46,19 @@ public class PlayerScore : NetworkBehaviour {
     {
       Debug.Log("Player score Start");
       myChat = GameObject.FindGameObjectWithTag("ChatController").GetComponent<ChatController>();
+      CmdSetPlayerName(myChat.localPlayerName);
     }
 
     gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
     scoreBoard = GameObject.FindGameObjectWithTag("ScoreBoard").GetComponent<ScoreBoardController>();
     scoreBoard.AddNewPlayer(this);
+  }
+
+  [Command]
+  void CmdSetPlayerName(string playerName)
+  {
+    this.playerName = playerName;
   }
 
   // adds point to score and sends message to update score board
@@ -64,14 +71,18 @@ public class PlayerScore : NetworkBehaviour {
   // constantly checks if the user name is correct and updates if it isnt
   private void Update()
   {
-    if (GetComponent<NetworkIdentity>().isLocalPlayer)
+    if (isLocalPlayer)
     {
-      if (myChat.name != playerName)
+      if (playerName != myChat.localPlayerName)
       {
-        playerName = myChat.GetPlayerName();
-        scoreBoard.UpdatePlayerName(this);
+        CmdSetPlayerName(myChat.localPlayerName);
+
       }
     }
+    //if (isLocalPlayer)
+    //{
+    //  playerName = myChat.localPlayerName;
+    //}
 
     if (scoreBoard.GetDisplayedScore(this) != Score)
     {
