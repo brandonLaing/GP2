@@ -12,11 +12,13 @@ public class PlayerGlowManager : MonoBehaviour
   [Range(0, 90)]
   public float lookAngle = 50F;
 
+  public float checkRange = 5;
+
   private void Update()
   {
     CheckForGlowableObjects();
     CheckForLooking();
-
+    CheckToInteractWithObjest();
   }
 
   private void CheckForGlowableObjects()
@@ -43,8 +45,16 @@ public class PlayerGlowManager : MonoBehaviour
     {
       if (!glowablesInRange.Contains(obj))
       {
-        obj.GetComponent<IGlowable>().Glow(false);
-        glowableObjects.Remove(obj);
+        if (obj.GetComponent<IGlowable>() == null)
+        {
+          glowableObjects.Remove(obj);
+
+        }
+        else
+        {
+          obj.GetComponent<IGlowable>().Glow(false);
+          glowableObjects.Remove(obj);
+        }
       }
     }
   }
@@ -72,7 +82,15 @@ public class PlayerGlowManager : MonoBehaviour
     {
       RaycastHit hit;
       
-      if (Physics.Raycast())
+      if (Physics.Raycast(camera.position, camera.forward, out hit, checkRange))
+      {
+        if (hit.transform.GetComponent<IInteractable>() != null)
+        {
+          Debug.Log("Interacted with object");
+          hit.transform.GetComponent<IInteractable>().Interact();
+
+        }
+      }
     }
   }
 }

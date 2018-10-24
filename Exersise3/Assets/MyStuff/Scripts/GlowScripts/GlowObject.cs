@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
-public class GlowObject : MonoBehaviour, IGlowable
+public class GlowObject : MonoBehaviour, IGlowable, IInteractable
 {
   public Color glowColor;
   public float lerpFactor = 10;
@@ -15,18 +17,16 @@ public class GlowObject : MonoBehaviour, IGlowable
     private set;
   }
 
-  public Color CurrentColor
-  {
-    get { return currentColor; }
-  }
-
   private List<Material> materials = new List<Material>();
   private Color currentColor;
   private Color targetColor;
 
+  private DateTime startTime;
+
   private void Start()
   {
     Renderers = GetComponentsInChildren<Renderer>();
+    startTime = DateTime.Now;
 
     foreach (var renderer in Renderers)
     {
@@ -34,28 +34,40 @@ public class GlowObject : MonoBehaviour, IGlowable
     }
   }
 
-  private void OnMouseEnter()
-  {
-    targetColor = glowColor;
-    enabled = true;
-  }
-
-  private void OnMouseExit()
-  {
-    targetColor = Color.black;
-    enabled = true;
-  }
-
   public void Glow(bool shouldGlow)
   {
-    if (shouldGlow)
+    if (!found)
     {
-      targetColor = glowColor;
+      if (shouldGlow)
+      {
+        targetColor = glowColor;
+      }
+      else
+      {
+        targetColor = Color.black;
+      }
     }
-    else
+  }
+
+  public void Interact()
+  {
+    if (!found)
     {
-      targetColor = Color.black;
+      Glow(false);
+      GetComponentInParent<GameController>().chosenGlows.Remove(this.gameObject);
+      SendAnalyticsEvent();
+      found = true;
     }
+  }
+
+  private void SendAnalyticsEvent()
+  {
+    TimeSpan timeToFind = DateTime.Now.Subtract(startTime);
+    AnalyticsEvent.Custom("object_found", new Dictionary<string, object>
+    {
+      { "object_name", transform.name},
+      { "time_taken_seconds", timeToFind.Seconds }
+    });
   }
 
   void Update()
@@ -72,7 +84,7 @@ public class GlowObject : MonoBehaviour, IGlowable
     {
       if (found)
       {
-        enabled = false;
+        Destroy(this);
 
       }
     }

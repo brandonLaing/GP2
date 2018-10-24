@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -30,6 +31,13 @@ public class GameController : MonoBehaviour
     }
   }
 
+  private void Update()
+  {
+    if (chosenGlows.Count == 0)
+    {
+      SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+  }
   private void AddGlows(GameObject obj)
   {
     GlowObject go = obj.AddComponent<GlowObject>();
