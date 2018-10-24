@@ -11,6 +11,7 @@ public class PlayerGlowManager : MonoBehaviour
   public float areaRangeRadius = 5;
   [Range(0, 90)]
   public float lookAngle = 50F;
+
   private void Update()
   {
     CheckForGlowableObjects();
@@ -20,13 +21,30 @@ public class PlayerGlowManager : MonoBehaviour
 
   private void CheckForGlowableObjects()
   {
-    glowableObjects = new List<GameObject>();
-
+    List<GameObject> glowablesInRange = new List<GameObject>();
+    // go though all the surrounding glowers and add them to glowable objects if they weren't before
     foreach (Collider col in Physics.OverlapSphere(transform.position, areaRangeRadius))
     {
       if (col.GetComponent<IGlowable>() != null)
       {
-        glowableObjects.Add(col.gameObject);
+        glowablesInRange.Add(col.gameObject);
+
+        if (!glowableObjects.Contains(col.gameObject))
+        {
+          glowableObjects.Add(col.gameObject);
+
+        }
+      }
+    }
+
+    List<GameObject> buffer = new List<GameObject>(glowableObjects);
+
+    foreach (GameObject obj in buffer)
+    {
+      if (!glowablesInRange.Contains(obj))
+      {
+        obj.GetComponent<IGlowable>().Glow(false);
+        glowableObjects.Remove(obj);
       }
     }
   }
@@ -45,6 +63,16 @@ public class PlayerGlowManager : MonoBehaviour
 
       }
 
+    }
+  }
+
+  private void CheckToInteractWithObjest()
+  {
+    if (Input.GetKeyDown(KeyCode.E))
+    {
+      RaycastHit hit;
+      
+      if (Physics.Raycast())
     }
   }
 }

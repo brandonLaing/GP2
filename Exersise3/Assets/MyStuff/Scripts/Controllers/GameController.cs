@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
   private void AddGlows(GameObject obj)
   {
     GlowObject go = obj.AddComponent<GlowObject>();
-    go.glowColor = Random.ColorHSV(0, 1, 0, 1, 0, 1, 0, 0);
+    go.glowColor = Random.ColorHSV(0.2F, 1, 0.2F, 1, 0.2F, 1, 0, 0);
     go.Glow(false);
 
   }
