@@ -1408,6 +1408,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.020231001, y: 0.020230995, z: 0.027176857}
   m_Center: {x: 0, y: 9.8320375e-17, z: 0.013837362}
+--- !u!84 &577517395
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 413
+  m_Height: 302
+  m_AntiAliasing: 4
+  m_DepthFormat: 2
+  m_ColorFormat: 7
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &578249018
 Prefab:
   m_ObjectHideFlags: 0
@@ -2585,7 +2616,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allGlowables: []
   chosenGlows: []
-  objectsToGlow: 5
+  objectsToGlow: 10
 --- !u!1001 &943595624
 Prefab:
   m_ObjectHideFlags: 0
@@ -3013,7 +3044,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1514846791}
+      objectReference: {fileID: 1808595030}
     - target: {fileID: 1723171305529792, guid: c181b102c09b4b140a0192d647554f19, type: 2}
       propertyPath: m_TagString
       value: MainCamera
@@ -3173,37 +3204,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.043569773, y: 0.058455836, z: 0.022217957}
   m_Center: {x: 0.010679507, y: 0.019227913, z: -0.00060561235}
---- !u!84 &1514846791
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 2041
-  m_Height: 502
-  m_AntiAliasing: 4
-  m_DepthFormat: 2
-  m_ColorFormat: 7
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &1541758708 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1000013991872698, guid: 426e3704c168f1749a6380580f18538b,
@@ -3743,6 +3743,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.069505244, y: 0.019849434, z: 0.18802658}
   m_Center: {x: 0.04766878, y: -0.0041479864, z: 0.0840133}
+--- !u!84 &1808595030
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 413
+  m_Height: 302
+  m_AntiAliasing: 4
+  m_DepthFormat: 2
+  m_ColorFormat: 7
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &1813546682
 Prefab:
   m_ObjectHideFlags: 0
