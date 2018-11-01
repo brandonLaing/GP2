@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33305940084692984}
   - component: {fileID: 23598831291051512}
   - component: {fileID: 65849830064141912}
+  - component: {fileID: 114367928631021054}
   m_Layer: 0
   m_Name: LowPolyPalletLarge
   m_TagString: Props
@@ -96,3 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.09230068, y: 0.020000001, z: 0.008542659}
   m_Center: {x: 0.000012254532, y: 0.000000005608282, z: 0.0042713317}
+--- !u!114 &114367928631021054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1884166684782612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyPalletLarge
+  glowing: 0

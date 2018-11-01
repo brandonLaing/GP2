@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33066291366531108}
   - component: {fileID: 23223390417545798}
   - component: {fileID: 65226266398717994}
+  - component: {fileID: 114279742840958560}
   m_Layer: 0
   m_Name: LowPolyWoodPile
   m_TagString: Props
@@ -96,3 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.043569773, y: 0.058455836, z: 0.022217957}
   m_Center: {x: 0.010679507, y: 0.019227913, z: -0.00060561235}
+--- !u!114 &114279742840958560
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1813146596807680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyWoodPile
+  glowing: 0

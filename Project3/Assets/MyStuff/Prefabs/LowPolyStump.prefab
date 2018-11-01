@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33784233399352320}
   - component: {fileID: 23414342295437324}
   - component: {fileID: 64754620779911054}
+  - component: {fileID: 114335335096282716}
   m_Layer: 0
   m_Name: LowPolyStump
   m_TagString: Props
@@ -98,3 +99,16 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: af683f4f8ff69844fad08512f65d29f2, type: 3}
+--- !u!114 &114335335096282716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1739985464624526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyStump
+  glowing: 0

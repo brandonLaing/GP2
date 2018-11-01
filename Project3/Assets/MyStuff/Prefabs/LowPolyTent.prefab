@@ -22,7 +22,9 @@ GameObject:
   - component: {fileID: 33259768892773060}
   - component: {fileID: 23671418290705246}
   - component: {fileID: 65221062822955318}
-  m_Layer: 2
+  - component: {fileID: 114596816731970464}
+  - component: {fileID: 64908627136737484}
+  m_Layer: 0
   m_Name: LowPolyTent
   m_TagString: Props
   m_Icon: {fileID: 0}
@@ -36,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1677272242601382}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: -9.3833, y: -0.05739987, z: 0.11}
+  m_LocalPosition: {x: 1031.2994, y: 329.4699, z: -408.08386}
   m_LocalScale: {x: 12.234644, y: 12.234661, z: 12.234649}
   m_Children: []
   m_Father: {fileID: 0}
@@ -84,6 +86,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1677272242601382}
   m_Mesh: {fileID: 4300000, guid: 7ef40ea38571e904aa4f192dfd15fa4c, type: 3}
+--- !u!64 &64908627136737484
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1677272242601382}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 7ef40ea38571e904aa4f192dfd15fa4c, type: 3}
 --- !u!65 &65221062822955318
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -92,7 +108,20 @@ BoxCollider:
   m_GameObject: {fileID: 1677272242601382}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.4342955, y: 0.51106507, z: 0.23180963}
   m_Center: {x: 0.19634888, y: 0.0031821968, z: 0.115904845}
+--- !u!114 &114596816731970464
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1677272242601382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyTent
+  glowing: 0

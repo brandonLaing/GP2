@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33787276846523882}
   - component: {fileID: 23826434646926120}
   - component: {fileID: 65273059374609704}
+  - component: {fileID: 114203449512422762}
   m_Layer: 0
   m_Name: LowPolyLadder
   m_TagString: Props
@@ -96,3 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.069505244, y: 0.019849434, z: 0.18802658}
   m_Center: {x: 0.04766878, y: -0.0041479864, z: 0.0840133}
+--- !u!114 &114203449512422762
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1214901233202032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyLadder
+  glowing: 0

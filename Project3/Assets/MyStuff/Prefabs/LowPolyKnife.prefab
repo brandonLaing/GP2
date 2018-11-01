@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33875821724749744}
   - component: {fileID: 23185969764553434}
   - component: {fileID: 65666298048501856}
+  - component: {fileID: 114282632485094658}
   m_Layer: 0
   m_Name: LowPolyKnife
   m_TagString: Props
@@ -96,3 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.04080736, y: 0.05000001, z: 0.011176041}
   m_Center: {x: -0.002002588, y: -3.8713865e-11, z: 0.004817079}
+--- !u!114 &114282632485094658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1556517192527080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyKnife
+  glowing: 0

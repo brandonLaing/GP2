@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33485900975251968}
   - component: {fileID: 23083052880715796}
   - component: {fileID: 65666126222911816}
+  - component: {fileID: 114693478561285476}
   m_Layer: 0
   m_Name: LowPolyStairs
   m_TagString: Props
@@ -96,3 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.061884694, y: 0.18431163, z: 0.01594528}
   m_Center: {x: 0.020942353, y: 0.07519373, z: 0.00797264}
+--- !u!114 &114693478561285476
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1733500768266674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyStairs
+  glowing: 0

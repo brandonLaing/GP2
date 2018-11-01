@@ -23,6 +23,8 @@ public class CreationObjectPositioner : MonoBehaviour
 
   public Axiss currentAxis;
 
+  public CreationObjectEditor mover;
+
   private Vector3 startMousePosition = new Vector3();
   public Vector3 currentMousePosition = new Vector3();
   private void Update()
@@ -88,37 +90,36 @@ public class CreationObjectPositioner : MonoBehaviour
       currentAxis = Axiss.zAxis;
 
 
-    if (Input.GetMouseButton(0))
+    if (Input.GetMouseButton(0) && target != null)
     {
       if (currentAxis == Axiss.xAxis)
       {
-        Debug.Log("Moving X");
         currentMousePosition = (startMousePosition - Camera.main.ScreenToViewportPoint(Input.mousePosition));
         currentMousePosition.z = 0;
         currentMousePosition.y = 0;
         if (currentMousePosition.x > .2F || currentMousePosition.x < -0.2F)
         {
           transform.position += currentMousePosition * -1 * transformSpeed * Time.deltaTime;
+          mover.UpdateUiTransformInfo();
 
         }
       }
 
       if (currentAxis == Axiss.yAxis)
       {
-        Debug.Log("Moving X");
         currentMousePosition = (startMousePosition - Camera.main.ScreenToViewportPoint(Input.mousePosition));
         currentMousePosition.z = 0;
         currentMousePosition.x = 0;
         if (currentMousePosition.y > .2F || currentMousePosition.y < -0.2F)
         {
           transform.position += currentMousePosition * -1 * transformSpeed * Time.deltaTime;
+          mover.UpdateUiTransformInfo();
 
         }
       }
 
       if (currentAxis == Axiss.zAxis)
       {
-        Debug.Log("Moving X");
         currentMousePosition = (startMousePosition - Camera.main.ScreenToViewportPoint(Input.mousePosition));
         currentMousePosition.y = 0;
         currentMousePosition.z = currentMousePosition.x;
@@ -126,9 +127,11 @@ public class CreationObjectPositioner : MonoBehaviour
         if (currentMousePosition.z > .1F || currentMousePosition.z < -0.1F)
         {
           transform.position += currentMousePosition * -1 * transformSpeed * Time.deltaTime;
+          mover.UpdateUiTransformInfo();
 
         }
       }
+
     }
   }
 
@@ -138,6 +141,13 @@ public class CreationObjectPositioner : MonoBehaviour
     {
       target.position = this.transform.position;
     }
+  }
+
+  public void MoveTarget(Vector3 position)
+  {
+    transform.position = position;
+    UpdateTargetLocation();
+    mover.UpdateUiTransformInfo();
   }
 
 

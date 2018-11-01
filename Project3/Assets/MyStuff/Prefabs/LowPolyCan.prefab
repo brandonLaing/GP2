@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33136708292489412}
   - component: {fileID: 23467566666437522}
   - component: {fileID: 65456853540713342}
+  - component: {fileID: 114871268854134874}
   m_Layer: 0
   m_Name: LowPolyCan
   m_TagString: Props
@@ -96,3 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.018632185, y: 0.017596342, z: 0.031659517}
   m_Center: {x: 0.00008604302, y: 0.00070800295, z: 0.015829762}
+--- !u!114 &114871268854134874
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1411159488339190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyCan
+  glowing: 0

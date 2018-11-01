@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33558342546014742}
   - component: {fileID: 23934590069401156}
   - component: {fileID: 65207644506179512}
+  - component: {fileID: 114568950950408386}
   m_Layer: 0
   m_Name: LowPolyFlashlight
   m_TagString: Props
@@ -96,3 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.012004214, y: 0.013861272, z: 0.05020799}
   m_Center: {x: -0.0000000069967143, y: 0.0000000014466484, z: 0.025104018}
+--- !u!114 &114568950950408386
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1647914938200390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolyFlashlight
+  glowing: 0

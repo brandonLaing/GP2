@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33375025204469584}
   - component: {fileID: 23561382689878786}
   - component: {fileID: 65780996708608758}
+  - component: {fileID: 114271298371838550}
   m_Layer: 0
   m_Name: LowPolySaw
   m_TagString: Props
@@ -96,3 +97,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.024538301, y: 0.034820184, z: 0.007919992}
   m_Center: {x: -0.0022691437, y: -0.004050454, z: 0.0019228293}
+--- !u!114 &114271298371838550
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1787873845720594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057bada42f647e14fb45e270ef978aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceName: LowPolySaw
+  glowing: 0
