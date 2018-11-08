@@ -97,7 +97,8 @@ public class CreationObjectEditor : MonoBehaviour
     }
     colors[2].text = newZ.ToString();
 
-    colorsBackground.color = new Color(newX, newY, newZ);
+    colorsBackground.color = new Color(newX / 255, newY / 255, newZ / 255);
+
     if (target != null)
     {
       target.GetComponent<PropInfo>().glowColor = colorsBackground.color;
@@ -107,9 +108,9 @@ public class CreationObjectEditor : MonoBehaviour
 
   public void SetNewTargetsGlow()
   {
-    colors[0].text = target.GetComponent<PropInfo>().glowColor.r.ToString();
-    colors[1].text = target.GetComponent<PropInfo>().glowColor.g.ToString();
-    colors[2].text = target.GetComponent<PropInfo>().glowColor.b.ToString();
+    colors[0].text = (target.GetComponent<PropInfo>().glowColor.r * 255).ToString();
+    colors[1].text = (target.GetComponent<PropInfo>().glowColor.g * 255).ToString();
+    colors[2].text = (target.GetComponent<PropInfo>().glowColor.b * 255).ToString();
 
   }
   #endregion
@@ -158,7 +159,6 @@ public class CreationObjectEditor : MonoBehaviour
   #region Transform UI
   public void UpdateUiTransformInfo()
   {
-    Debug.Log("updating UI");
     if (target.GetComponent<PropInfo>())
     {
       nameText.text = target.GetComponent<PropInfo>().resourceName;
