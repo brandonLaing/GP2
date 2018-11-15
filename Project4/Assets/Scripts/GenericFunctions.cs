@@ -76,4 +76,30 @@ public static class BrandonsArrayFunctions
 
     return total / array.Length;
   }
+
+  public static void SortBubble<T>(ref T[] array) where T : IComparable
+  {
+    for (int i = 0; i <= array.Length - 2; i++)
+    {
+      for (int j = 0; j <= array.Length - 2; j++)
+      {
+        if (array[j].CompareTo(array[j + 1]) > 0)
+        {
+          T temp = array[j + 1]; ;
+          array[j + 1] = array[j];
+          array[j] = temp;
+        }
+      }
+    }
+  }
+
+  public static void Reverse<T>(ref T[] array)
+  {
+    T[] temp = new T[array.Length];
+    
+    for (int i = array.Length; i > 0; i--)
+    {
+      temp
+    }
+  }
 }
