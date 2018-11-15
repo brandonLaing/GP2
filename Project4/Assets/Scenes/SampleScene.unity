@@ -290,12 +290,25 @@ MonoBehaviour:
   pseudorandomSystem:
     chancesTable: []
     pickedTable: 
+    numberOfOptions: 0
+    step: 0
     timesRun: 0
     currentPercent: 0
     averagePick: 0
     minTimesPicked: 0
     maxTimesPicked: 0
     diffrence: 0
+  tester:
+  - 10
+  - 4
+  - 9
+  - 1
+  - 6
+  - 3
+  - 8
+  - 2
+  - 5
+  - 7
 --- !u!4 &1688204950
 Transform:
   m_ObjectHideFlags: 0

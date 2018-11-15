@@ -18,7 +18,8 @@ public class PseudorandomChoiceDebugger : MonoBehaviour
   [Header("System Info")]
   public PseudorandomChoiceSystem pseudorandomSystem = new PseudorandomChoiceSystem();
 
-  public float[] tester = new float[] { 2.5F, 10, 25.2F, 5 };
+  public List<Vector3> inputed = new List<Vector3>();
+  public List<Vector3> outpued = new List<Vector3>();
 
   private void Start()
   {
@@ -30,8 +31,6 @@ public class PseudorandomChoiceDebugger : MonoBehaviour
     {
       pseudorandomSystem.InitilizeTables(numberOfOptions, stepSize);
     }
-
-    BrandonsArrayFunctions.SortBubble(ref tester);
   }
 
   private void Update()

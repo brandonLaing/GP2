@@ -77,6 +77,7 @@ public static class BrandonsArrayFunctions
     return total / array.Length;
   }
 
+  // sorts array using bubble method
   public static void SortBubble<T>(ref T[] array) where T : IComparable
   {
     for (int i = 0; i <= array.Length - 2; i++)
@@ -93,13 +94,101 @@ public static class BrandonsArrayFunctions
     }
   }
 
+  // reverses array
   public static void Reverse<T>(ref T[] array)
   {
     T[] temp = new T[array.Length];
-    
-    for (int i = array.Length; i > 0; i--)
+
+    for (int i = array.Length - 1, j = 0; i >= 0; i--, j++)
     {
-      temp
+      temp[j] = array[i];
     }
+
+    array = temp;
+  }
+}
+
+// que i made
+public class BrandonsQue<T>
+{
+  private List<T> _que = new List<T>();
+
+  public int Count { get { return _que.Count; } }
+
+  // adds
+  public void Push(T newObject)
+  {
+    _que.Add(newObject);
+  }
+
+  // removes
+  public T Pop()
+  {
+    if (Count > 0)
+    {
+      T temp;
+      temp = _que[0];
+      _que.RemoveAt(0);
+      return temp;
+    }
+
+    throw new InvalidOperationException("Operation not valid due to the current state of the object");
+  }
+
+  public void Clear()
+  {
+    _que = new List<T>();
+  }
+
+  public T PeekNext()
+  {
+    if (Count > 0)
+    {
+      return _que[0];
+    }
+
+    throw new InvalidOperationException("Operation not valid due to the current state of the object");
+  }
+
+  public override string ToString()
+  {
+    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+    
+    foreach (T item in _que)
+    {
+      sb.AppendLine(item.ToString());
+    }
+
+    return sb.ToString();
+  }
+}
+
+public class BrandonsStack<T>
+{
+  private List<T> _stack = new List<T>();
+
+  public int Count { get { return _stack.Count; } }
+
+  public void Push (T item)
+  {
+    _stack.Insert(0, item);
+  }
+
+  public T Pop()
+  {
+    if (Count > 0)
+    {
+      T temp;
+      temp = _stack[0];
+      _stack.RemoveAt(0);
+      return temp;
+    }
+
+    throw new InvalidOperationException("Operation not valid due to the current state of the object");
+  }
+
+  public void Clear()
+  {
+    _stack = new List<T>();
   }
 }
