@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65972886388165864}
   - component: {fileID: 114878937661509108}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,3 +109,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indexPosition: {x: 0, y: 0}
+  connections: []

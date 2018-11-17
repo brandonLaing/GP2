@@ -19,8 +19,8 @@ public class PseudorandomChoiceSystem
   public int[] pickedTable;
 
   [Header("Settings")]
-  private int numberOfOptions;
-  private float step;
+  public int numberOfOptions;
+  public float step;
 
   [Header("Extra Info")]
   public int timesRun = 0;

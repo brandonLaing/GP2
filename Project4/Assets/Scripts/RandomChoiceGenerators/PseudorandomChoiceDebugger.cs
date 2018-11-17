@@ -18,6 +18,9 @@ public class PseudorandomChoiceDebugger : MonoBehaviour
   [Header("System Info")]
   public PseudorandomChoiceSystem pseudorandomSystem = new PseudorandomChoiceSystem();
 
+  public List<Vector3> inputed = new List<Vector3>();
+  public List<Vector3> outpued = new List<Vector3>();
+
   private void Start()
   {
     if (setStep)
