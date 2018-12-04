@@ -37,7 +37,6 @@ public class TileGenerator : MonoBehaviour
     if (cubeSetter != null)
     {
       cubeSetter.SetCubes(gridWidth, gridHeight);
-
     }
 
     MakeAllTiles();
@@ -55,13 +54,11 @@ public class TileGenerator : MonoBehaviour
     if (chaser != null)
     {
       chaser.RebuildPath();
-
     }
 
     if (runner != null)
     {
       runner.RebuildPath();
-
     }
   }
 

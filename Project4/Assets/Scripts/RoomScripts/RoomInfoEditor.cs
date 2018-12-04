@@ -15,11 +15,11 @@ public class RoomInfoEditor : Editor
     GUILayout.Space(10);
     if (GUILayout.Button("Open Rooms connections"))
     {
-      targetScript.OpenRooms();
+      targetScript.StartCoroutine(targetScript.OpenRooms());
     }
 
     GUILayout.Space(10);
-    foreach (RoomConnectionInfo connection in targetScript.connections)
+    foreach (RoomConnectionInfo connection in targetScript.connections.Keys)
     {
       if (connection.IsConnected)
       {

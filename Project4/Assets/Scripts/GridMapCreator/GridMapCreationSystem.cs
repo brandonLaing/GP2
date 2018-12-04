@@ -19,6 +19,11 @@ public class GridMapCreationSystem : MonoBehaviour
 
   public bool logDebugs = false;
 
+  public GameObject yellowPrefab;
+  public GameObject blackPrefab;
+
+  public Transform backgroundHolder;
+
   public void Start()
   {
     staticLevelWidth = levelWidth; staticLevelHeight = levelHeight;
@@ -45,8 +50,44 @@ public class GridMapCreationSystem : MonoBehaviour
     }
   }
 
+  public IEnumerator BuildBackground()
+  {
+    for (int i = 0; i < levelWidth; i++)
+    {
+      for (int j = 0; j < levelHeight; j++)
+      {
+        if (i % 2 == 0)
+        {
+          if (j % 2 == 0)
+          {
+            Instantiate(yellowPrefab, new Vector3(i * 14, -1F, j * 14), Quaternion.identity, backgroundHolder);
+          }
+          else
+          {
+            Instantiate(blackPrefab, new Vector3(i * 14, -1F, j * 14), Quaternion.identity, backgroundHolder);
+          }
+        }
+        else
+        {
+          if (j % 2 == 0)
+          {
+            Instantiate(blackPrefab, new Vector3(i * 14, -1F, j * 14), Quaternion.identity, backgroundHolder);
+          }
+          else
+          {
+            Instantiate(yellowPrefab, new Vector3(i * 14, -1F, j * 14), Quaternion.identity, backgroundHolder);
+          }
+        }
+
+      }
+        yield return new WaitForEndOfFrame();
+    }
+  }
+
   public IEnumerator CreateMap()
   {
+    StartCoroutine(BuildBackground());
+
     yield return new WaitForEndOfFrame();
     BuildStartingRoom();
     yield return new WaitForEndOfFrame();
@@ -54,12 +95,19 @@ public class GridMapCreationSystem : MonoBehaviour
     for (int i  = 1; i < numberOfRooms; i++)
     {
       BuildNewRoom();
-      yield return new WaitForEndOfFrame();
+
+      if (i % 1000 == 0)
+      {
+        yield return new WaitForEndOfFrame();
+
+        if (logDebugs)
+          Debug.Log("Building room " + i);
+      }
     }
 
     yield return new WaitForEndOfFrame();
 
-    InstantiateMap();
+    StartCoroutine(InstantiateMap());
 
     yield return new WaitForEndOfFrame();
 
@@ -87,23 +135,25 @@ public class GridMapCreationSystem : MonoBehaviour
 
     #region Build the room
     // get a random buildable room
-    RoomData startingRoom = buildableRooms[Random.Range(0, buildableRooms.Count)];
+    RoomData baseRoom = buildableRooms[Random.Range(0, buildableRooms.Count)];
     // get a random connection from that buildable room
-    RoomConnectionData startingConnection = startingRoom.RandomOpenConnection;
+    RoomConnectionData baseConnection = baseRoom.RandomOpenConnection;
     // build a new room in the current rooms position plus the connections direction
-    RoomData endingRoom = new RoomData(startingRoom.Position + startingConnection.ConnectionDirection);
+    RoomData addedRoom = new RoomData(baseRoom.Position + baseConnection.Direction);
+
+    Debug.Log(string.Format("Made new room at <{0}, {1}>", addedRoom.Position.x, addedRoom.Position.y));
 
     // announce this
     if (logDebugs)
-      Debug.Log(string.Format("Made new room at <{0}, {1}> from <{2}, {3}>", endingRoom.Position.x, endingRoom.Position.y, startingRoom.Position.x, startingRoom.Position.y));
+      Debug.Log(string.Format("Made new room at <{0}, {1}> from <{2}, {3}>", addedRoom.Position.x, addedRoom.Position.y, baseRoom.Position.x, baseRoom.Position.y));
 
-    if (_gridDataMap[endingRoom.Position.x, endingRoom.Position.y] != null)
+    if (_gridDataMap[addedRoom.Position.x, addedRoom.Position.y] != null)
     {
       Debug.LogWarning("Building new room where one already exist");
     }
 
-    buildableRooms.Add(endingRoom);
-    _gridDataMap[endingRoom.Position.x, endingRoom.Position.y] = endingRoom;
+    buildableRooms.Add(addedRoom);
+    _gridDataMap[addedRoom.Position.x, addedRoom.Position.y] = addedRoom;
     #endregion
 
     #region Update other rooms info
@@ -112,21 +162,21 @@ public class GridMapCreationSystem : MonoBehaviour
     // we have already set that up
 
     // set up connections between new room and old room
-    startingConnection.AddConnection(endingRoom);
-    endingRoom.GetConnectionInPosition(startingRoom.Position).AddConnection(startingRoom);
+    baseConnection.AddConnection(addedRoom);
+    addedRoom.GetConnectionInPosition(baseRoom.Position).AddConnection(baseRoom);
 
-    foreach (RoomConnectionData endConnection in endingRoom.connections)
+    foreach (RoomConnectionData connection in addedRoom.connections)
     {
-      Vector2Int endConnectionRoomPosition = endingRoom.Position + endConnection.ConnectionDirection;
+      Vector2Int connectionPosition = addedRoom.Position + connection.Direction;
 
-      if (_gridDataMap[endConnectionRoomPosition.x, endConnectionRoomPosition.y] != null)
+      if (_gridDataMap[connectionPosition.x, connectionPosition.y] != null)
       {
-        RoomData otherRoom = _gridDataMap[endConnectionRoomPosition.x, endConnectionRoomPosition.y];
+        RoomData otherRoom = _gridDataMap[connectionPosition.x, connectionPosition.y];
 
-        if (otherRoom != startingRoom)
+        if (otherRoom != baseRoom)
         {
-          otherRoom.GetConnectionInPosition(endingRoom.Position).ClosePosition(endingRoom);
-          endingRoom.GetConnectionInPosition(otherRoom.Position).ClosePosition(otherRoom);
+          otherRoom.GetConnectionInPosition(addedRoom.Position).ClosePosition(addedRoom);
+          addedRoom.GetConnectionInPosition(otherRoom.Position).ClosePosition(otherRoom);
         }
 
         if (!otherRoom.HasConnectionOpen)
@@ -143,37 +193,34 @@ public class GridMapCreationSystem : MonoBehaviour
       }
     }
 
-    if (!endingRoom.HasConnectionOpen)
+    if (!addedRoom.HasConnectionOpen)
     {
-      buildableRooms.Remove(endingRoom);
+      buildableRooms.Remove(addedRoom);
     }
-
     #endregion
-
-    DisplayRoomText();
   }
 
   public void DisplayRoomText()
   {
     System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
-    for (int h = levelHeight - 1; h >= 0; h--)
+    for (int i = levelHeight - 1; i >= 0; i--)
     {
-      for (int w = 0; w < levelWidth; w++)
+      for (int j = 0; j < levelWidth; j++)
       {
-        if (_gridDataMap[w, h] != null)
+        if (_gridDataMap[j, i] != null)
         {
           sb.Append("R\t");
         }
-        else if (w == 0 && h == 0)
+        else if (j == 0 && i == 0)
         {
           sb.Append("0\t");
         }
-        else if (w == 0 && h == 1)
+        else if (j == 0 && i == 1)
         {
           sb.Append("Y\t");
         }
-        else if (w == 1 && h == 0)
+        else if (j == 1 && i == 0)
         {
           sb.Append("X\t");
         }
@@ -188,39 +235,9 @@ public class GridMapCreationSystem : MonoBehaviour
 
     if (logDebugs)
       Debug.Log(sb);
-
-    #region Bad
-    /*
-    System.Text.StringBuilder sb = new System.Text.StringBuilder();
-    sb.AppendLine();
-
-    for (int i = levelHeight - 1; i >= 0; i--)
-    {
-      for (int j = 0; j < levelWidth; j++)
-      {
-        if (_gridMap[i, j] != null)
-        {
-          sb.Append("R\t");
-        }
-        else if (i == 0 && j == 0)
-        {
-          sb.Append("0\t");
-        }
-        else
-        {
-          sb.Append("E\t");
-        }
-      }
-      sb.AppendLine();
-      sb.AppendLine();
-    }
-
-    Debug.Log(sb);
-    */
-    #endregion
   }
 
-  public void InstantiateMap()
+  public IEnumerator InstantiateMap()
   {
     foreach (GameObject obj in builtObjects)
     {
@@ -236,12 +253,13 @@ public class GridMapCreationSystem : MonoBehaviour
       {
         if (_gridDataMap[i, j] != null)
         {
-          GameObject newRoom = Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
+          GameObject newRoom = Instantiate(prefab, new Vector3(i * 14, 0, j * 14), Quaternion.identity, this.transform);
           _gridGameObjectMap[i, j] = newRoom;
           newRoom.GetComponent<RoomInfo>().SetPosition(new Vector2Int(i, j));
           builtObjects.Add(newRoom);
         }
       }
+      yield return new WaitForEndOfFrame();
     }
 
     for (int i = 0; i < levelWidth; i++)
@@ -274,242 +292,4 @@ public class GridMapCreationSystem : MonoBehaviour
       }
     }
   }
-}
-
-public class RoomData
-{
-  #region Variables
-  /// <summary>
-  /// Position on 2D grid for this roomData
-  /// </summary>
-  private int x, y;
-
-  public Vector2Int Position
-  {
-    get
-    {
-      return new Vector2Int(x, y);
-    }
-    set
-    {
-      x = value.x;
-      y = value.y;
-    }
-  }
-
-  /// <summary>
-  /// Connections for this room
-  /// </summary>
-  public List<RoomConnectionData> connections = new List<RoomConnectionData>();
-  #endregion
-
-  #region Constructors
-  public RoomData(Vector2Int roomPosition)
-  {
-    this.Position = roomPosition;
-    BuildRoomBaseConnections();
-  }
-
-  public RoomData(int roomX, int roomY)
-  {
-    this.Position = new Vector2Int(roomX, roomY);
-    BuildRoomBaseConnections();
-  }
-  #endregion
-
-  #region Properties
-  /// <summary>
-  /// Checks if the room has a connection it can build in
-  /// </summary>
-  public bool HasConnectionOpen
-  {
-    get
-    {
-      return (NumberOfBuildOptions != 0);
-    }
-  }
-
-  /// <summary>
-  /// Checks for the number of rooms it can build in
-  /// </summary>
-  public int NumberOfBuildOptions
-  {
-    get
-    {
-      int temp = 0;
-      foreach (RoomConnectionData connection in connections)
-      {
-        if (connection.IsOpen)
-          temp++;
-      }
-
-      return temp;
-    }
-  }
-
-  /// <summary>
-  /// Returns list of all open rooms for this connection
-  /// </summary>
-  public List<RoomConnectionData> OpenRooms
-  {
-    get
-    {
-      List<RoomConnectionData> openList = new List<RoomConnectionData>();
-
-      foreach (RoomConnectionData connection in connections)
-      {
-        if (connection.IsOpen)
-          openList.Add(connection);
-      }
-
-      return openList;
-    }
-  }
-
-  /// <summary>
-  /// Returns a random open room
-  /// </summary>
-  public RoomConnectionData RandomOpenConnection
-  {
-    get
-    {
-      return OpenRooms[Random.Range(0, OpenRooms.Count)];
-    }
-  }
-  #endregion
-
-  #region Methods
-  /// <summary>
-  /// Sets up base empty room connections for a room
-  /// </summary>
-  private void BuildRoomBaseConnections()
-  {
-    if (Position.x != 0)
-    {
-      connections.Add(new RoomConnectionData(this, new Vector2Int(-1, 0)));
-    }
-    if (Position.y != GridMapCreationSystem.staticLevelHeight - 1)
-    {
-      connections.Add(new RoomConnectionData(this, new Vector2Int(0, 1)));
-    }
-    if (Position.x != GridMapCreationSystem.staticLevelWidth - 1)
-    {
-      connections.Add(new RoomConnectionData(this, new Vector2Int(1, 0)));
-    }
-    if (Position.y != 0)
-    {
-      connections.Add(new RoomConnectionData(this, new Vector2Int(0, -1)));
-    }
-  }
-
-  public RoomConnectionData GetConnectionInPosition(Vector2Int roomPosition)
-  {
-    foreach (RoomConnectionData connection in connections)
-    {
-      if ((Position + connection.ConnectionDirection) == roomPosition)
-      {
-        return connection;
-      }
-    }
-
-    return null;
-  }
-  #endregion
-}
-
-public class RoomConnectionData
-{
-  #region Variables
-  /// <summary>
-  /// Holds reference to the connections room
-  /// </summary>
-  private RoomData _room;
-
-  public RoomData Room
-  {
-    get
-    {
-      return _room;
-    }
-    set
-    {
-      _room = value;
-    }
-  }
-
-  private int xDir, yDir;
-
-  /// <summary>
-  /// Holds direction the connection is heading
-  /// </summary>
-  public Vector2Int ConnectionDirection
-  {
-    get
-    {
-      return new Vector2Int(xDir, yDir);
-    }
-    set
-    {
-      xDir = value.x;
-      yDir = value.y;
-    }
-  }
-
-  /// <summary>
-  /// Holds reference to connected room
-  /// </summary>
-  public RoomData _connectedRoom;
-
-  public RoomData ConnectedRoom
-  {
-    get
-    {
-      return _connectedRoom;
-    }
-    set
-    {
-      _connectedRoom = value;
-    }
-  }
-
-  /// <summary>
-  /// Checks if the position in the target direction is open
-  /// </summary>
-  public bool IsOpen = true;
-
-  /// <summary>
-  /// Checks if the room is connected to the connected room
-  /// </summary>
-  public bool IsConnected = false;
-  #endregion
-
-  #region Constructor
-  public RoomConnectionData(RoomData room, Vector2Int connectionDirection)
-  {
-    // set the current room
-    this.Room = room;
-    // set the direction
-    this.ConnectionDirection = connectionDirection;
-
-    // sets 
-    IsOpen = true;
-    IsConnected = false;
-  }
-  #endregion
-
-  #region Methods
-  public void AddConnection(RoomData connectedRoom)
-  {
-    this.ConnectedRoom = connectedRoom;
-    IsOpen = false;
-    IsConnected = true;
-  }
-
-  public void ClosePosition(RoomData connectedRoom)
-  {
-    this.ConnectedRoom = connectedRoom;
-    IsOpen = false;
-    IsConnected = false;
-  }
-  #endregion
 }
