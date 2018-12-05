@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23114128206081208}
   - component: {fileID: 64575074681334262}
   - component: {fileID: 114132704906701260}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WhiteGroundTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

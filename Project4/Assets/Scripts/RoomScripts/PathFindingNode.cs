@@ -62,7 +62,7 @@ public class PathFindingNode
     }
 
     // send message to log that this tile is blocked
-    Debug.Log(this.nodeTransform.name + " was unblocked");
+    //Debug.Log(this.nodeTransform.name + " was unblocked");
   }
 
   public PathfindingNodeConnection FindConnection(PathFindingNode node)

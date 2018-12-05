@@ -36,10 +36,10 @@ public class RoomInfo : MonoBehaviour
       StartCoroutine(PlaceInbetweenTiles());
     }
 
-    //if (roomType == RoomType.Starting)
-    //{
+    if (roomType == RoomType.Starting)
+    {
       StartCoroutine(OpenRooms());
-    //}
+    }
   }
 
   #region FloorBuilding
@@ -167,12 +167,25 @@ public class RoomInfo : MonoBehaviour
       {
         connection.IsAccessable = true;
         connections[connection].SetActive(false);
+
+        if (connection.inBetweenTile != null)
+        {
+          connection.inBetweenTile.tileNode.Unblock();
+        }
+        else
+        {
+          //Debug.LogWarning("didnt unblocked tile");
+        }
       }
     }
   }
 
   public IEnumerator OpenRooms()
   {
+    yield return new WaitForEndOfFrame();
+    yield return new WaitForEndOfFrame();
+    yield return new WaitForEndOfFrame();
+    yield return new WaitForEndOfFrame();
     yield return new WaitForEndOfFrame();
 
     foreach (RoomConnectionInfo connection in connections.Keys)
@@ -183,6 +196,15 @@ public class RoomInfo : MonoBehaviour
         connections[connection].SetActive(false);
 
         connection.connectedRoom.OpenRoom(this);
+
+        if (connection.inBetweenTile != null)
+        {
+          connection.inBetweenTile.tileNode.Unblock();
+        }
+        else
+        {
+          //Debug.LogWarning("didnt unblocked tile");
+        }
       }
     }
   }
@@ -284,14 +306,14 @@ public class RoomInfo : MonoBehaviour
   
   public IEnumerator PlaceInbetweenTiles()
   {
-    yield return new WaitForSeconds(1);
+    yield return new WaitForEndOfFrame();
 
 
     foreach (RoomConnectionInfo connection in connections.Keys)
     {
-      Debug.LogWarning(connection.room.indexPosition - connection.connectedRoom.indexPosition);
-
-      if (connection.room.indexPosition - connection.connectedRoom.indexPosition == new Vector2Int(1,0) && (connection.room.roomType != RoomType.Empty && connection.connectedRoom.roomType != RoomType.Empty))
+      if (connection.room.indexPosition - connection.connectedRoom.indexPosition == new Vector2Int(1,0) && 
+        (connection.room.roomType != RoomType.Empty && connection.connectedRoom.roomType != RoomType.Empty) && 
+        connection.IsConnected)
       {
         // find the connecting tile on this side
         var baseRoomTile = connection.room.transform.Find("MainRoom").Find("Row: 0").Find("0 : 5");
@@ -312,13 +334,12 @@ public class RoomInfo : MonoBehaviour
         newTile.GetComponent<PathingTile>().tileNode.AddConnection(otherRoomTile.GetComponent<PathingTile>().tileNode, false);
         otherRoomTile.GetComponent<PathingTile>().tileNode.AddConnection(newTile.GetComponent<PathingTile>().tileNode, false);
         gizmoConnections.Add(new GizmoConnections(newTile.GetComponent<PathingTile>().tileNode, otherRoomTile.GetComponent<PathingTile>().tileNode, false));
-      }
+
+        connection.inBetweenTile = newTile.GetComponent<PathingTile>();
+      } 
 
       if (connection.room.indexPosition - connection.connectedRoom.indexPosition == new Vector2Int(0, 1) && (connection.room.roomType != RoomType.Empty && connection.connectedRoom.roomType != RoomType.Empty))
       {
-        Debug.LogError("base room position: " + connection.room.indexPosition + "\n" +
-          "other room position: " + connection.connectedRoom.indexPosition);
-
         // find the connecting tile on this side
         var baseRoomTile = connection.room.transform.Find("MainRoom").Find("Row: 5").Find("5 : 0");
 
@@ -327,10 +348,6 @@ public class RoomInfo : MonoBehaviour
 
         // make a new tile inbetween them and connect the two new tiles to the currently added tile
         var position = new Vector2(baseRoomTile.transform.position.x, baseRoomTile.transform.position.z - 1);
-
-        Debug.LogError("base tile position: " + baseRoomTile.position + "\n" +
-          "other tile position: " + otherRoomTile.position + "\n" +
-          "guess position: " + position);
 
         var newTile = PlaceTile(position.x, position.y, greyTilePrefab, new Vector3(0, 0, 0), this.transform);
         newTile.GetComponent<PathingTile>().tileNode = new PathFindingNode(newTile.transform);
@@ -343,6 +360,7 @@ public class RoomInfo : MonoBehaviour
         otherRoomTile.GetComponent<PathingTile>().tileNode.AddConnection(newTile.GetComponent<PathingTile>().tileNode, false);
         gizmoConnections.Add(new GizmoConnections(newTile.GetComponent<PathingTile>().tileNode, otherRoomTile.GetComponent<PathingTile>().tileNode, false));
 
+        connection.inBetweenTile = newTile.GetComponent<PathingTile>();
       }
     }
   }
@@ -370,7 +388,7 @@ public class RoomInfo : MonoBehaviour
     if (roomType == RoomType.Starting)
       Gizmos.color = Color.yellow;
 
-    Gizmos.DrawSphere(transform.position + Vector3.up, 1F);
+    Gizmos.DrawSphere(transform.position + Vector3.up * 10, 1F);
 
     if (drawGizmos)
     {
@@ -379,12 +397,12 @@ public class RoomInfo : MonoBehaviour
         if (connection.IsConnected == true && connection.IsAccessable)
         {
           Gizmos.color = Color.green;
-          Gizmos.DrawLine(transform.position + Vector3.up, connection.connectedRoom.transform.position + Vector3.up);
+          Gizmos.DrawLine(transform.position + Vector3.up * 10, connection.connectedRoom.transform.position + Vector3.up * 10);
         }
         else if (connection.IsConnected && !connection.IsAccessable)
         {
           Gizmos.color = Color.red;
-          Gizmos.DrawLine(transform.position + Vector3.up, connection.connectedRoom.transform.position + Vector3.up);
+          Gizmos.DrawLine(transform.position + Vector3.up * 10, connection.connectedRoom.transform.position + Vector3.up * 10);
 
         }
       }

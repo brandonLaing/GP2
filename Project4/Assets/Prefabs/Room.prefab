@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indexPosition: {x: 0, y: 0}
-  drawGizmos: 0
+  drawGizmos: 1
   greyTilePrefab: {fileID: 1488867034859716, guid: 1f64bcb6d33e7ae4391c579cf587a409,
     type: 2}
   whiteTilePrefab: {fileID: 1101346247068006, guid: d251e1c4b555917468144c5d9d2e4905,

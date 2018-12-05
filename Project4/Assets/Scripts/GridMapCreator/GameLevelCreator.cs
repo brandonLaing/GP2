@@ -40,7 +40,7 @@ public class GameLevelCreator : MonoBehaviour
   {
     mapStaticSize = mapSize;
 
-    BuildBackground();
+    //BuildBackground();
 
     BuildRooms();
 
