@@ -2,16 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ControlMode
+{
+  Build, Unit
+}
+
 public class PlayerControls : MonoBehaviour
 {
+  public ControlMode currentMode;
+
   public LayerMask unitLayer;
+  public List<GameObject> selectedUnits;
 
   public LayerMask buildingLayer;
   public PathingTile selectedTile;
 
   private void Update()
   {
-    if (Input.GetMouseButtonDown(0))
+    if (Input.GetKeyDown(KeyCode.B))
+    {
+      currentMode = ControlMode.Build;
+    }
+    if (Input.GetKeyDown(KeyCode.V))
+    {
+      currentMode = ControlMode.Unit;
+    }
+
+    if (Input.GetMouseButtonDown(1) && currentMode == ControlMode.Build)
     {
       RaycastHit hit;
 
@@ -19,23 +36,12 @@ public class PlayerControls : MonoBehaviour
       {
         selectedTile = hit.transform.GetComponent<PathingTile>();
 
-        var sb = new System.Text.StringBuilder();
-
-        foreach (var actionName in selectedTile.actions.Keys)
-        {
-          sb.Append(actionName);
-        }
-
-        Debug.Log(sb);
+        selectedTile.BuildUnitSpawner();
       }
     }
 
-    if (selectedTile != null)
+    if (Input.GetMouseButton(0) && currentMode == ControlMode.Unit)
     {
-      if (Input.GetKeyDown(KeyCode.Space))
-      {
-        selectedTile.actions["Build Unit Spawner"]();
-      }
 
     }
   }

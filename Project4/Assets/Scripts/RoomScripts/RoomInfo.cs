@@ -140,6 +140,7 @@ public class RoomInfo : MonoBehaviour
   {
     GameObject newTile = Instantiate(tileType, new Vector3(xPos, 0, zPos) + startPosition, Quaternion.identity, parent);
     newTile.name = xPos + " : " + zPos;
+    //newTile.GetComponent<PathingTile>().SetActions(roomType);
 
     return newTile;
   }

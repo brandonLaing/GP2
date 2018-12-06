@@ -121,4 +121,4 @@ MonoBehaviour:
   roomType: 0
   wallPrefab: {fileID: 1900072830317464, guid: 198d0f7105341004da157b26ef202b38, type: 2}
   doorPrefab: {fileID: 1900072830317464, guid: 198d0f7105341004da157b26ef202b38, type: 2}
-  drawConnectionGizmos: 1
+  drawConnectionGizmos: 0

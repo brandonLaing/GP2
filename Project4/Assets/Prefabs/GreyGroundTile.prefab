@@ -111,4 +111,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   building: {fileID: 0}
-  towerPrefab: {fileID: 0}
+  towerPrefab: {fileID: 1562263500534014, guid: b618859bf49120c4cb7f9c2cb4b569aa,
+    type: 2}
