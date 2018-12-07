@@ -829,10 +829,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a3c3b5ca8d8e141a8bb9d7ee67229d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: 200
+  mapSize: 5
   mapOffset: 12
   startingPosition: {x: 0, y: 0}
-  numberOfBasicRooms: 400
+  numberOfBasicRooms: 10
   minEmptySpaceClump: 4
   maxEmptySpaceClump: 16
   roomPrefab: {fileID: 1426516771873202, guid: 8e1d46d9dac27fb4fbb077a7cfab133e, type: 2}
@@ -1079,11 +1079,14 @@ MonoBehaviour:
   currentMode: 0
   unitLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   selectedUnits: []
-  buildingLayer:
+  tileLayer:
     serializedVersion: 2
     m_Bits: 512
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   selectedTile: {fileID: 0}
 --- !u!1 &1514636095
 GameObject:

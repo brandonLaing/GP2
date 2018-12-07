@@ -22,10 +22,34 @@ public class RoomInfo : MonoBehaviour
   public GameObject wallPrefab;
   public GameObject doorPrefab;
 
-  public PathFindingNode[] allNodes;
+  public List<GameObject> allNodes = new List<GameObject>();
 
   public List<GizmoConnections> gizmoConnections = new List<GizmoConnections>(), missConnections = new List<GizmoConnections>();
   public bool drawConnectionGizmos;
+
+  public List<GameObject> resourceObjects = new List<GameObject>();
+
+  public void CheckToOpen(GameObject resourceBuilding)
+  {
+    Debug.Log("Help");
+
+    resourceObjects.Remove(resourceBuilding);
+    if (resourceObjects.Count == 0)
+    {
+      Debug.Log("opening");
+
+      OpenTiles();
+      StartCoroutine(OpenRooms());
+    }
+  }
+
+  private void OpenTiles()
+  {
+    for (int i = 0; i < allNodes.Count; i++)
+    {
+      allNodes[i].GetComponent<PathingTile>().buildable = true;
+    }
+  }
 
   private void Start()
   {
@@ -34,11 +58,26 @@ public class RoomInfo : MonoBehaviour
       BuildFloor();
       BuildStartWalls();
       StartCoroutine(PlaceInbetweenTiles());
+
+    }
+
+    if (roomType == RoomType.Basic)
+    {
+      for (int i = 0; i < 2; i++)
+      {
+        GameObject building;
+
+        if (allNodes[Random.Range(0, allNodes.Count)].GetComponent<PathingTile>().BuildResourceBuilding(this, out building))
+        {
+          resourceObjects.Add(building);
+        }
+      }
     }
 
     if (roomType == RoomType.Starting)
     {
       StartCoroutine(OpenRooms());
+      OpenTiles();
     }
   }
 
@@ -141,6 +180,8 @@ public class RoomInfo : MonoBehaviour
     GameObject newTile = Instantiate(tileType, new Vector3(xPos, 0, zPos) + startPosition, Quaternion.identity, parent);
     newTile.name = xPos + " : " + zPos;
     //newTile.GetComponent<PathingTile>().SetActions(roomType);
+
+    allNodes.Add(newTile);
 
     return newTile;
   }

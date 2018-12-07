@@ -8,6 +8,9 @@ public class PathingTile : MonoBehaviour
 
   public GameObject building;
   public GameObject towerPrefab;
+  public GameObject resoucePrefab;
+
+  public bool buildable;
 
   public void MoveTo(Transform targetObject)
   {
@@ -37,17 +40,13 @@ public class PathingTile : MonoBehaviour
 
   public void BuildUnitSpawner()
   {
-    Debug.Log("Spawing Unit spawner");
-    if (building == null)
+    if (building == null && buildable)
     {
       for (int i = 0; i < tileNode.connections.Length; i++)
       {
-        Debug.Log("going though loop");
-
         if (tileNode.connections[i] == null ||
           tileNode.connections[i].endNode.nodeTransform.GetComponent<PathingTile>().building != null)
         {
-          Debug.Log("couldnt build room");
           return;
         }
         else
@@ -57,7 +56,6 @@ public class PathingTile : MonoBehaviour
             if (tileNode.connections[i].endNode.connections[j] == null ||
               tileNode.connections[i].endNode.connections[j].endNode.nodeTransform.GetComponent<PathingTile>().building != null)
             {
-              Debug.Log("couldnt build room");
               return;
             }
           }
@@ -65,15 +63,34 @@ public class PathingTile : MonoBehaviour
       }
 
       building = Instantiate(towerPrefab, transform.position + Vector3.up, Quaternion.identity, this.transform);
-      building.GetComponent<UnitSpawnerController>().node = tileNode;
-      tileNode.Block();
+
+      StartCoroutine(WaitThenBlock());
     }
     else
     {
-      Debug.Log("couldnt build room");
       return;
     }
+  }
 
+  public bool BuildResourceBuilding(RoomInfo room, out GameObject newBuilding)
+  {
+    if (building == null)
+    {
+      building = Instantiate(resoucePrefab, transform.position + Vector3.up, Quaternion.identity, this.transform);
+      building.GetComponent<ResourceBuildingController>().room = room;
+      newBuilding = building;
+      return true;
+    }
+
+    newBuilding = building;
+    return false;
+  }
+
+  private IEnumerator WaitThenBlock()
+  {
+    yield return new WaitForEndOfFrame();
+    building.GetComponent<UnitSpawnerController>().node = tileNode;
+    tileNode.Block();
   }
 
   public void DestroyBuilding()

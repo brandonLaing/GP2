@@ -41,7 +41,7 @@ public class PathFindingNode
       }
     }
 
-    Debug.Log(nodeTransform.name + " was blocked");
+    //Debug.Log(nodeTransform.name + " was blocked");
   }
 
   public void Unblock()

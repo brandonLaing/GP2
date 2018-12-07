@@ -113,3 +113,6 @@ MonoBehaviour:
   building: {fileID: 0}
   towerPrefab: {fileID: 1562263500534014, guid: b618859bf49120c4cb7f9c2cb4b569aa,
     type: 2}
+  resoucePrefab: {fileID: 1014005581649856, guid: 0ae2da6f124f1d7409dd17a202f1cde3,
+    type: 2}
+  buildable: 0
