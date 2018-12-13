@@ -43,6 +43,8 @@ public class GameControls : MonoBehaviour
 
       if (bx >= 0 && bx <= 18 && by >= 0 && by <= 18 && stones[bx, by] == null)
       {
+        checkedPositions = new List<Vector2Int>();
+
         GameObject newMoku = GameObject.Instantiate(isBlacksTurn ? blackMoku : whiteMoku);
         newMoku.transform.position = new Vector3(bx, by, 0);
 
