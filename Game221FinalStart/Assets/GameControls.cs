@@ -43,7 +43,9 @@ public class GameControls : MonoBehaviour
 
       if (bx >= 0 && bx <= 18 && by >= 0 && by <= 18 && stones[bx, by] == null)
       {
+        sb = new StringBuilder();
         checkedPositions = new List<Vector2Int>();
+
 
         GameObject newMoku = GameObject.Instantiate(isBlacksTurn ? blackMoku : whiteMoku);
         newMoku.transform.position = new Vector3(bx, by, 0);
@@ -54,6 +56,13 @@ public class GameControls : MonoBehaviour
           newMoku.GetComponent<MokuInfo>().mokuColor = MokuColor.white;
 
         stones[bx, by] = newMoku;
+
+        if (!CheckForOpening(new Vector2Int(bx, by)))
+        {
+          Destroy(newMoku);
+          stones[bx, by] = null;
+          return;
+        }
 
         RemoveCapturedStones();
 
